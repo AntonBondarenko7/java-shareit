@@ -15,5 +15,4 @@ public class UserDto {
     @NotBlank(message = "email не может быть пустым")
     @Email(message = "Введен некорректный email")
     private String email;
-
 }

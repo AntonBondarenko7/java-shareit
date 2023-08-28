@@ -10,9 +10,8 @@ import javax.validation.constraints.NotBlank;
 public class User {
 
     private Long id;
-    @NotBlank
+    @NotBlank(message = "Имя не может быть пустым")
     private String name;
-    @NotBlank
+    @NotBlank(message = "email не может быть пустым")
     private String email;
-
 }
