@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserDto;
+
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -27,8 +28,8 @@ public class UserService {
     }
 
     public UserDto updateUser(Long userId, UserDto userDto) {
-        return userRepository.updateUser(userId, userDto).orElseThrow(() ->
-                new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден."));
+        getUserById(userId);
+        return userRepository.updateUser(userId, userDto);
     }
 
     public boolean deleteUserById(Long userId) {

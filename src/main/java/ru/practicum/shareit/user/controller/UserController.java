@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user.controller;
 
+import ru.practicum.shareit.common.AdviceController;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -7,64 +8,39 @@ import java.util.List;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
-@Slf4j
-public class UserController {
+public class UserController extends AdviceController {
 
     private final UserService userService;
 
     @GetMapping
     public List<UserDto> getAllUsers() {
-        List<UserDto> users = userService.getAllUsers();
-        log.info("Получен список пользователей, количество = {}", users.size());
-        return users;
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{userId}")
-    /**
-     * Получение пользователя по id
-     */
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
-        UserDto user = userService.getUserById(userId);
-        log.info("Получен пользователь с id = {}", userId);
-        return ResponseEntity.ok(user);
+    public UserDto getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId);
     }
 
     @PostMapping
     @Validated
-    /**
-     * Создание пользователя
-     */
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        UserDto userDtoNew = userService.createUser(userDto);
-        log.info("Добавлен новый пользователь: {}", userDtoNew);
-        return ResponseEntity.ok(userDtoNew);
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+        return userService.createUser(userDto);
     }
 
     @PatchMapping("/{userId}")
-    /**
-     * Редактирование пользователя
-     */
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
-        userDto = userService.updateUser(userId, userDto);
-        log.info("Обновлен пользователь: {}", userDto);
-        return ResponseEntity.ok(userDto);
+    public UserDto updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
+        return userService.updateUser(userId, userDto);
     }
 
     @DeleteMapping("/{userId}")
-    /**
-     * Удаление пользователя по id
-     */
-    public ResponseEntity<Boolean> deleteUserById(@PathVariable Long userId) {
-        log.info("Удалён пользователь с id = {}", userId);
-        return ResponseEntity.ok(userService.deleteUserById(userId));
+    public Boolean deleteUserById(@PathVariable Long userId) {
+        return userService.deleteUserById(userId);
     }
-
 }
