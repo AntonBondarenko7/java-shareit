@@ -7,6 +7,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -15,11 +16,8 @@ import org.springframework.stereotype.Repository;
 public class InMemoryItemRepository implements ItemRepository {
 
     Map<Long, List<Item>> items = new HashMap<>();
-    public static long itemId = 0;
 
-    private static Long generateId() {
-        return ++itemId;
-    }
+    private static final AtomicLong itemId = new AtomicLong(0);
 
     @Override
     public List<ItemDto> getAllItemsByUser(Long userId) {
@@ -48,7 +46,7 @@ public class InMemoryItemRepository implements ItemRepository {
     @Override
     public ItemDto createItem(ItemDto itemDto, User user) {
         Item item = ItemMapper.toItem(itemDto, user);
-        item.setId(generateId());
+        item.setId(itemId.incrementAndGet());
 
         items.compute(item.getOwner().getId(), (userId, userItems) -> {
             if (userItems == null) {
@@ -64,7 +62,7 @@ public class InMemoryItemRepository implements ItemRepository {
     @Override
     public ItemDto updateItem(Long itemId, ItemDto itemDto, User user) {
         Item item = getItemById(itemId).orElseThrow(() ->
-                new ItemNotFoundException("Вещь с идентификатором " + itemId + "не найдена."));
+                new ItemNotFoundException(itemId));
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
         }

@@ -25,25 +25,25 @@ public class ItemService {
 
     public List<ItemDto> getAllItemsByUser(Long userId) {
         userRepository.getUserById(userId).orElseThrow(() ->
-                new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден."));
+                new UserNotFoundException(userId));
         return itemRepository.getAllItemsByUser(userId);
     }
 
     public ItemDto getItemById(Long itemId) {
         return itemRepository.getItemDtoById(itemId).orElseThrow(() ->
-                new ItemNotFoundException("Вещь с идентификатором " + itemId + " не найдена."));
+                new ItemNotFoundException(itemId));
     }
 
     public ItemDto createItem(ItemDto itemDto, Long userId) {
         return itemRepository.createItem(itemDto, userRepository.getUserById(userId).orElseThrow(() ->
-                new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден.")));
+                new UserNotFoundException(userId)));
     }
 
     public ItemDto updateItem(Long itemId, ItemDto itemDto, Long userId) {
         User user = userRepository.getUserById(userId).orElseThrow(() ->
-                new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден."));
+                new UserNotFoundException(userId));
         Item item = itemRepository.getItemById(itemId).orElseThrow(() ->
-                new ItemNotFoundException("Вещь с идентификатором " + itemId + " не найдена."));
+                new ItemNotFoundException(itemId));
         checkItemOwnership(user, item);
         return itemRepository.updateItem(itemId, itemDto, user);
     }

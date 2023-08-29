@@ -20,7 +20,7 @@ public class UserService {
 
     public UserDto getUserById(Long userId) {
         return userRepository.getUserDtoById(userId).orElseThrow(() ->
-                new UserNotFoundException("Пользователь с идентификатором " + userId + " не найден."));
+                new UserNotFoundException(userId));
     }
 
     public UserDto createUser(UserDto userDto) {

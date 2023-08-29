@@ -6,10 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.ItemOwnershipException;
 import ru.practicum.shareit.user.exception.UserEmailValidationException;
-import ru.practicum.shareit.user.exception.UserNotFoundException;
 
 
 @RestControllerAdvice
@@ -31,14 +29,7 @@ public class AdviceController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleUserNotFoundException(final UserNotFoundException e) {
-        log.debug("Ошибка: 404 NOT_FOUND {}", e.getMessage(), e);
-        return "Ошибка: " + e.getMessage();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleItemNotFoundException(final ItemNotFoundException e) {
+    public String handleNotFoundException(final NotFoundException e) {
         log.debug("Ошибка: 404 NOT_FOUND {}", e.getMessage(), e);
         return "Ошибка: " + e.getMessage();
     }

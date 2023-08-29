@@ -1,8 +1,10 @@
 package ru.practicum.shareit.user.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import ru.practicum.shareit.common.NotFoundException;
 
-    public UserNotFoundException(String message) {
-        super(message);
+public class UserNotFoundException extends NotFoundException {
+
+    public UserNotFoundException(Long userId) {
+        super("Пользователь с идентификатором " + userId + " не найден.");
     }
 }

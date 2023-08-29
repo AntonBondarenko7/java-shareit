@@ -6,6 +6,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -14,11 +15,8 @@ import org.springframework.stereotype.Repository;
 public class InMemoryUserRepository implements UserRepository {
 
     Map<Long, User> users = new HashMap<>();
-    public static long userId = 0;
 
-    private static Long generateId() {
-        return ++userId;
-    }
+    private static final AtomicLong userId = new AtomicLong(0);
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -51,7 +49,7 @@ public class InMemoryUserRepository implements UserRepository {
 
         User user = UserMapper.toUser(userDto);
 
-        user.setId(generateId());
+        user.setId(userId.incrementAndGet());
         users.put(user.getId(), user);
         return UserMapper.toUserDto(user);
     }
