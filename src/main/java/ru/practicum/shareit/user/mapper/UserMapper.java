@@ -1,25 +1,27 @@
 package ru.practicum.shareit.user.mapper;
 
-import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserShortDto;
 import ru.practicum.shareit.user.model.User;
 
-@UtilityClass
-public class UserMapper {
+import java.util.List;
 
-    public UserDto toUserDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .build();
-    }
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-    public User toUser(UserDto userDto) {
-        return User.builder()
-                .id(userDto.getId())
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-                .build();
-    }
+@Mapper
+public interface UserMapper {
+
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+    UserDto toUserDto(User user);
+
+    UserShortDto toUserShortDto(User user);
+
+    @Mapping(target = "id", ignore = true)
+    User toUser(UserDto userDto);
+
+    List<UserDto> convertUserListToUserDtoList(List<User> list);
+
 }

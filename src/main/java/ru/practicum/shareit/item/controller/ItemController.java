@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.common.Constants;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
@@ -29,9 +30,9 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItemById(@PathVariable Long itemId) {
+    public ItemDto getItemById(@PathVariable Long itemId, @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
         log.info("Запрос на получение информации по вещи с  id = " + itemId);
-        ItemDto item = itemService.getItemById(itemId);
+        ItemDto item = itemService.getItemById(itemId, userId);
         log.info("Ответ на получение информации по вещи с  id = " + itemId + ": " + item);
         return item;
     }
@@ -62,5 +63,15 @@ public class ItemController {
         List<ItemDto> items = itemService.findItems(text, userId);
         log.info("Ответ на поиск вещей: " + items);
         return items;
+    }
+
+    public CommentDto saveComment(@Valid @RequestBody CommentDto commentDto,
+                                  @RequestHeader(Constants.HEADER_USER_ID) Long userId,
+                                  @PathVariable Long itemId) {
+        log.info("Получен запрос на сохранение комментария");
+        commentDto = itemService.saveComment(commentDto, itemId, userId);
+        log.info("Добавлен новый комментарий: {} \n пользователем с id = {} для вещи с id = {}.",
+                commentDto, userId, itemId);
+        return commentDto;
     }
 }

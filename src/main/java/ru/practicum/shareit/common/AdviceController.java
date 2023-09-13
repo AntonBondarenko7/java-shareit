@@ -41,10 +41,10 @@ public class AdviceController {
         return "Ошибка валидации: " + e.getMessage();
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleAllUnhandledExceptions(final Throwable e) {
-        log.debug("Ошибка: 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
-        return "Ошибка: " + e.getMessage();
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public String handleAllUnhandledExceptions(final Throwable e) {
+//        log.debug("Ошибка: 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
+//        return "Ошибка: " + e.getMessage();
+//    }
 }

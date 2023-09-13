@@ -54,10 +54,9 @@ public class UserController extends AdviceController {
     }
 
     @DeleteMapping("/{userId}")
-    public Boolean deleteUserById(@PathVariable Long userId) {
+    public void deleteUserById(@PathVariable Long userId) {
         log.info("Запрос на удаление пользователя c id = " + userId);
-        Boolean deleted = userService.deleteUserById(userId);
-        log.info("Ответ на удаление пользователя c id = " + userId + ": " + deleted);
-        return deleted;
+        userService.deleteUserById(userId);
+        log.info("Удален пользователь c id = " + userId);
     }
 }
