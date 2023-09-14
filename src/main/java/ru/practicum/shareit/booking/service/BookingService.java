@@ -35,10 +35,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 @RequiredArgsConstructor
 public class BookingService {
 
-
+    private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
 
     public List<BookingResponseDto> getAllBookingsByUser(Long userId, String state) {
         userRepository.findById(userId).orElseThrow(() ->

@@ -1,19 +1,19 @@
 package ru.practicum.shareit.item.model;
 
-import ru.practicum.shareit.request.ItemRequest;
+import lombok.Data;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
-import lombok.Getter;
+
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Entity
 @Table(name = "items", schema = "public")
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class Item {
 
     @Id

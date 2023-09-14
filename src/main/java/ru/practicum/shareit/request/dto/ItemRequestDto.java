@@ -1,7 +1,15 @@
 package ru.practicum.shareit.request.dto;
 
-/**
- * TODO Sprint add-item-requests.
- */
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import ru.practicum.shareit.user.dto.UserDto;
+
+@Data
 public class ItemRequestDto {
+
+    private Long id;
+    private String description;
+    @NotNull(message = "Пользователь не может быть null.")
+    private UserDto requestor;
+
 }

@@ -3,8 +3,7 @@ package ru.practicum.shareit.user.model;
 import lombok.Data;
 
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Data
 @NoArgsConstructor

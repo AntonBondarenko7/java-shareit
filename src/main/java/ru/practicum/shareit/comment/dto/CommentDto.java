@@ -1,9 +1,11 @@
 package ru.practicum.shareit.comment.dto;
 
 import java.time.LocalDateTime;
-import javax.validation.constraints.NotEmpty;
 
+
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
 
 @Data
 public class CommentDto {
