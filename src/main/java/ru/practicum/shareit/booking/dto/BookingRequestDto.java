@@ -1,8 +1,8 @@
 package ru.practicum.shareit.booking.dto;
 
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.user.dto.UserDto;
 

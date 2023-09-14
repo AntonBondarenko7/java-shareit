@@ -1,6 +1,6 @@
 package ru.practicum.shareit.request.dto;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import ru.practicum.shareit.user.dto.UserDto;
 

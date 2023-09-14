@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.controller;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.common.Constants;

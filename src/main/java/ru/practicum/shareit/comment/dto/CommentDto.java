@@ -3,7 +3,7 @@ package ru.practicum.shareit.comment.dto;
 import java.time.LocalDateTime;
 
 
-import jakarta.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
 

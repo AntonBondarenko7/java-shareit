@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.service.BookingService;
