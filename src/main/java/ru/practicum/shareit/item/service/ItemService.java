@@ -63,7 +63,7 @@ public class ItemService {
         }
         List<Comment> comments = commentRepository.findAllByItemId(itemId);
 
-        return ItemMapper.INSTANCE.toItemDto(item);
+        return ItemMapper.INSTANCE.toItemOwnerDto(item, lastBooking, nextBooking, comments);
     }
 
     @Transactional

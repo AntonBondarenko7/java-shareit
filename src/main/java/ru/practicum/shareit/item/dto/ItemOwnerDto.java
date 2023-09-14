@@ -8,8 +8,8 @@ import ru.practicum.shareit.comment.dto.CommentDto;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode
-public class ItemOwnerDto {
+@EqualsAndHashCode(callSuper = true)
+public class ItemOwnerDto extends ItemDto {
 
     private BookingOwnerDto lastBooking;
     private BookingOwnerDto nextBooking;

@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<querydsl.version>5.0.0</querydsl.version>
 	</properties>
 
 	<dependencies>
@@ -83,18 +84,18 @@
 			<version>1.5.5.Final</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-			<version>5.0.0</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.querydsl</groupId>-->
+<!--			<artifactId>querydsl-jpa</artifactId>-->
+<!--			<version>5.0.0</version>-->
+<!--		</dependency>-->
 
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<version>${querydsl.version}</version>
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.querydsl</groupId>-->
+<!--			<artifactId>querydsl-apt</artifactId>-->
+<!--			<version>${querydsl.version}</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 <!--		<dependency>-->
 <!--			<groupId>javax.persistence</groupId>-->
@@ -107,6 +108,21 @@
 <!--			<artifactId>jakarta.validation-api</artifactId>-->
 <!--			<version>3.0.2</version>-->
 <!--		</dependency>-->
+
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+			<classifier>jakarta</classifier>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<classifier>jakarta</classifier>
+			<version>${querydsl.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.annotation</groupId>

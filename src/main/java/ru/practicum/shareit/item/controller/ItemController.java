@@ -66,6 +66,8 @@ public class ItemController {
         return items;
     }
 
+    @PostMapping("/{itemId}/comment")
+    @Validated
     public CommentDto saveComment(@Valid @RequestBody CommentDto commentDto,
                                   @RequestHeader(Constants.HEADER_USER_ID) Long userId,
                                   @PathVariable Long itemId) {

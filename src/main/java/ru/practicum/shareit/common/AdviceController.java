@@ -2,7 +2,9 @@ package ru.practicum.shareit.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,12 +22,12 @@ public class AdviceController {
         return "Ошибка: " + e.getMessage();
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleItemOwnershipException(final ItemOwnershipException e) {
-        log.debug("Ошибка: 403 FORBIDDEN {}", e.getMessage(), e);
-        return "Ошибка: " + e.getMessage();
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    public String handleItemOwnershipException(final ItemOwnershipException e) {
+//        log.debug("Ошибка: 403 FORBIDDEN {}", e.getMessage(), e);
+//        return "Ошибка: " + e.getMessage();
+//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -36,15 +38,37 @@ public class AdviceController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleValidationException(final MethodArgumentNotValidException e) {
+    public String handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
         log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
         return "Ошибка валидации: " + e.getMessage();
     }
 
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public String handleAllUnhandledExceptions(final Throwable e) {
-//        log.debug("Ошибка: 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
-//        return "Ошибка: " + e.getMessage();
-//    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidationException(final ValidationException e) {
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleHttpMessageNotReadableException(final HttpMessageNotReadableException e) {
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
+        return "Ошибка валидации: 400 BAD_REQUEST " + e.getMessage();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleMissingRequestHeaderException(final MissingRequestHeaderException e) {
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
+        return "Ошибка валидации: 400 BAD_REQUEST " + e.getMessage();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleAllUnhandledExceptions(final Throwable e) {
+        log.debug("Ошибка: 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
+        return "Ошибка: " + e.getMessage();
+    }
+
 }

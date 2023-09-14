@@ -27,7 +27,7 @@ public interface ItemMapper {
 
     ItemShortDto toItemShortDto(Item item);
 
-
+    @Mapping(target = "id", source = "item.id")
     @Mapping(target = "lastBooking", source = "lastBooking", qualifiedByName = "BookingToBookingOwnerDto")
     @Mapping(target = "nextBooking", source = "nextBooking", qualifiedByName = "BookingToBookingOwnerDto")
     @Mapping(target = "comments", source = "comments")

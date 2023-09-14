@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.exception.*;
@@ -67,7 +67,7 @@ public class BookingService {
                 bookings = bookingRepository.findByBookerIdAndStatusOrderByEndDesc(userId, BookingStatus.REJECTED);
                 break;
             default:
-                throw new BookingStatusNotFoundException();
+                throw new ValidationException("Unknown state: " + state);
         }
 
         return BookingMapper.INSTANCE.convertBookingListToBookingResponseDtoList(bookings);
@@ -117,7 +117,7 @@ public class BookingService {
                         .forEach(bookings::add);
                 break;
             default:
-                throw new BookingStatusNotFoundException();
+                throw new ValidationException("Unknown state: " + state);
         }
         return BookingMapper.INSTANCE.convertBookingListToBookingResponseDtoList(bookings);
     }
@@ -146,8 +146,7 @@ public class BookingService {
                     " недоступна для бронирования.");
         }
         if (item.getOwner().getId().equals(userId)) {
-            throw new ValidationException("Пользователь с id = " + userId +
-                    " владелец вещи с id = " + item.getId());
+            throw new BookingItemOwnerException(userId, item.getId());
         }
 
         bookingInDtoNew.setStatus(BookingStatus.WAITING);
