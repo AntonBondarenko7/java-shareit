@@ -8,7 +8,6 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.item.exception.ItemOwnershipException;
 import ru.practicum.shareit.user.exception.UserEmailValidationException;
 
 
@@ -21,13 +20,6 @@ public class AdviceController {
         log.debug("Ошибка: 409 CONFLICT {}", e.getMessage(), e);
         return "Ошибка: " + e.getMessage();
     }
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    public String handleItemOwnershipException(final ItemOwnershipException e) {
-//        log.debug("Ошибка: 403 FORBIDDEN {}", e.getMessage(), e);
-//        return "Ошибка: " + e.getMessage();
-//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)

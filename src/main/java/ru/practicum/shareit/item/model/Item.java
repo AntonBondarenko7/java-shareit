@@ -6,7 +6,6 @@ import ru.practicum.shareit.user.model.User;
 
 import jakarta.persistence.*;
 
-
 import lombok.NoArgsConstructor;
 
 
@@ -36,4 +35,5 @@ public class Item {
     @OneToOne
     @JoinColumn(name = "request_id")
     private ItemRequest request;
+
 }

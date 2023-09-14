@@ -6,4 +6,5 @@ import lombok.experimental.UtilityClass;
 public class Constants {
 
     public static final String HEADER_USER_ID = "X-Sharer-User-Id";
+
 }

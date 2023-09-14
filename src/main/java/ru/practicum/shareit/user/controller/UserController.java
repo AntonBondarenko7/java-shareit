@@ -61,4 +61,5 @@ public class UserController extends AdviceController {
         userService.deleteUserById(userId);
         log.info("Удален пользователь c id = " + userId);
     }
+
 }

@@ -33,7 +33,6 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-
     public List<BookingResponseDto> getAllBookingsAllItemsByOwner(
             @RequestHeader(Constants.HEADER_USER_ID) Long userId,
             @RequestParam(defaultValue = "ALL") String state) {

@@ -10,6 +10,6 @@ public class ItemRequestDto {
     private Long id;
     private String description;
     @NotNull(message = "Пользователь не может быть null.")
-    private UserDto requestor;
+    private UserDto requester;
 
 }
