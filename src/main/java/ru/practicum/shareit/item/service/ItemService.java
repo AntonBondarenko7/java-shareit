@@ -48,8 +48,8 @@ public class ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new ItemNotFoundException(itemId));
 
-        Booking lastBooking;
-        Booking nextBooking;
+        Booking lastBooking = null;
+        Booking nextBooking = null;
         if (item.getOwner().getId().equals(userId)) {
             lastBooking = bookingRepository.findFirstByItemIdAndStatusAndStartIsBefore(
                     itemId, BookingStatus.APPROVED, LocalDateTime.now(),
@@ -57,10 +57,8 @@ public class ItemService {
             nextBooking = bookingRepository.findFirstByItemIdAndStatusAndStartIsAfter(
                     itemId, BookingStatus.APPROVED, LocalDateTime.now(),
                     Sort.by(Sort.Direction.ASC, "start")).orElse(null);
-        } else {
-            lastBooking = null;
-            nextBooking = null;
         }
+
         List<Comment> comments = commentRepository.findAllByItemId(itemId);
 
         return ItemMapper.INSTANCE.toItemOwnerDto(item, lastBooking, nextBooking, comments);

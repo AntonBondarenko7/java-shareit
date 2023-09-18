@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.controller;
 
 import javax.validation.Valid;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;

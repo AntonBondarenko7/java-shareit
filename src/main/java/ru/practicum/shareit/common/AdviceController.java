@@ -28,32 +28,12 @@ public class AdviceController {
         return "Ошибка: " + e.getMessage();
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class,
+            HttpMessageNotReadableException.class, MissingRequestHeaderException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
-        return "Ошибка валидации: " + e.getMessage();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(final ValidationException e) {
+    public ErrorResponse handleValidationExceptions(final RuntimeException e) {
         log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleHttpMessageNotReadableException(final HttpMessageNotReadableException e) {
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
-        return "Ошибка валидации: 400 BAD_REQUEST " + e.getMessage();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleMissingRequestHeaderException(final MissingRequestHeaderException e) {
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
-        return "Ошибка валидации: 400 BAD_REQUEST " + e.getMessage();
     }
 
     @ExceptionHandler
