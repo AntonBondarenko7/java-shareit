@@ -2,15 +2,21 @@ package ru.practicum.shareit.request.model;
 
 import javax.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "requests", schema = "public")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class ItemRequest {
 
     @Id
@@ -25,6 +31,9 @@ public class ItemRequest {
     private User requester;
 
     @Column
-    private Instant created = Instant.now();
+    private Instant created;
+
+    @OneToMany(mappedBy = "request", fetch = FetchType.LAZY)
+    private Set<Item> items = new HashSet<>();
 
 }

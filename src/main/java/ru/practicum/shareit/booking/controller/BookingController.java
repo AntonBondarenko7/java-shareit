@@ -3,6 +3,8 @@ package ru.practicum.shareit.booking.controller;
 import javax.validation.Valid;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
+import ru.practicum.shareit.booking.model.BookingState;
+import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.common.Constants;
+import ru.practicum.shareit.common.utils.Constants;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +27,10 @@ public class BookingController {
     @GetMapping
     public List<BookingResponseDto> getAllBookingsByUser(
             @RequestHeader(Constants.HEADER_USER_ID) Long userId,
-            @RequestParam(defaultValue = "ALL") String state) {
-        List<BookingResponseDto> bookingResponseDtos = bookingService.getAllBookingsByUser(userId, state);
+            @RequestParam(defaultValue = "ALL") BookingState state,
+            @RequestParam(defaultValue = "0") Integer from,
+            @RequestParam(defaultValue = "10") Integer size) {
+        List<BookingResponseDto> bookingResponseDtos = bookingService.getAllBookingsByUser(userId, state, from, size);
         log.info("Получен список всех бронирований текущего пользователя с id = {}, количество = {}.",
                 userId, bookingResponseDtos.size());
         return bookingResponseDtos;
@@ -35,8 +39,11 @@ public class BookingController {
     @GetMapping("/owner")
     public List<BookingResponseDto> getAllBookingsAllItemsByOwner(
             @RequestHeader(Constants.HEADER_USER_ID) Long userId,
-            @RequestParam(defaultValue = "ALL") String state) {
-        List<BookingResponseDto> bookingResponseDtos = bookingService.getAllBookingsAllItemsByOwner(userId, state);
+            @RequestParam(defaultValue = "ALL") BookingState state,
+            @RequestParam(defaultValue = "0") Integer from,
+            @RequestParam(defaultValue = "10") Integer size) {
+        List<BookingResponseDto> bookingResponseDtos = bookingService.getAllBookingsAllItemsByOwner(
+                userId, state, from, size);
         log.info("Получен список всех бронирований для всех вещей текущего пользователя с id = {}, " +
                 "количество = {}.", userId, bookingResponseDtos.size());
         return bookingResponseDtos;

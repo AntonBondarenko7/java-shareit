@@ -16,6 +16,6 @@ public class ItemDto {
     private String description;
     @NotNull(message = "Доступность не может быть пустым")
     private Boolean available;
-    private ItemRequest request;
+    private Long requestId;
 
 }

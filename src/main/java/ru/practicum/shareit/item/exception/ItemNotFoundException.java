@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.exception;
 
-import ru.practicum.shareit.common.NotFoundException;
+import ru.practicum.shareit.common.exception.NotFoundException;
 
 public class ItemNotFoundException extends NotFoundException {
 

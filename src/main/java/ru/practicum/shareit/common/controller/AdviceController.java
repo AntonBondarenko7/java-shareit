@@ -1,4 +1,4 @@
-package ru.practicum.shareit.common;
+package ru.practicum.shareit.common.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,11 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.user.exception.UserEmailValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import ru.practicum.shareit.common.exception.ErrorResponse;
+import ru.practicum.shareit.common.exception.NotFoundException;
+import ru.practicum.shareit.common.exception.NotSavedException;
+import ru.practicum.shareit.common.exception.ValidationException;
 
 
 @RestControllerAdvice
@@ -16,7 +20,7 @@ import ru.practicum.shareit.user.exception.UserEmailValidationException;
 public class AdviceController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleUserEmailValidationException(final UserEmailValidationException e) {
+    public String handleNotSavedException(final NotSavedException e) {
         log.debug("Ошибка: 409 CONFLICT {}", e.getMessage(), e);
         return "Ошибка: " + e.getMessage();
     }
@@ -28,12 +32,24 @@ public class AdviceController {
         return "Ошибка: " + e.getMessage();
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class,
-            HttpMessageNotReadableException.class, MissingRequestHeaderException.class})
+    @ExceptionHandler({ MethodArgumentNotValidException.class, ValidationException.class,
+            HttpMessageNotReadableException.class, MissingRequestHeaderException.class,
+            MethodArgumentTypeMismatchException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationExceptions(final RuntimeException e) {
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
-        return new ErrorResponse(e.getMessage());
+        String message;
+        if (e instanceof MethodArgumentTypeMismatchException) {
+            MethodArgumentTypeMismatchException typeMismatchException = (MethodArgumentTypeMismatchException) e;
+            if ("state".equals(typeMismatchException.getName())) {
+                message = "Unknown state: " + typeMismatchException.getValue();
+            } else {
+                message = typeMismatchException.getMessage();
+            }
+        } else {
+            message = e.getMessage();
+        }
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", message, e);
+        return new ErrorResponse(message);
     }
 
     @ExceptionHandler
