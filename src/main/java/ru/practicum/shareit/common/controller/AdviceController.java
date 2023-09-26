@@ -34,7 +34,7 @@ public class AdviceController {
 
     @ExceptionHandler({ MethodArgumentNotValidException.class, ValidationException.class,
             HttpMessageNotReadableException.class, MissingRequestHeaderException.class,
-            MethodArgumentTypeMismatchException.class })
+            MethodArgumentTypeMismatchException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationExceptions(final RuntimeException e) {
         String message;
