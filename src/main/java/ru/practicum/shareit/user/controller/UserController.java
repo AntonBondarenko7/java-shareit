@@ -1,16 +1,18 @@
 package ru.practicum.shareit.user.controller;
 
+
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.common.AdviceController;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
-import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,10 +56,10 @@ public class UserController extends AdviceController {
     }
 
     @DeleteMapping("/{userId}")
-    public Boolean deleteUserById(@PathVariable Long userId) {
+    public void deleteUserById(@PathVariable Long userId) {
         log.info("Запрос на удаление пользователя c id = " + userId);
-        Boolean deleted = userService.deleteUserById(userId);
-        log.info("Ответ на удаление пользователя c id = " + userId + ": " + deleted);
-        return deleted;
+        userService.deleteUserById(userId);
+        log.info("Удален пользователь c id = " + userId);
     }
+
 }

@@ -1,8 +1,11 @@
 package ru.practicum.shareit.item.exception;
 
-public class ItemOwnershipException extends RuntimeException {
+import ru.practicum.shareit.common.NotFoundException;
 
-    public ItemOwnershipException(String message) {
-        super(message);
+public class ItemOwnershipException extends NotFoundException {
+
+    public ItemOwnershipException(Long userId, Long itemId) {
+        super("Пользователь с id = " + userId + " не является владельцем вещи c id = " + itemId);
     }
+
 }
