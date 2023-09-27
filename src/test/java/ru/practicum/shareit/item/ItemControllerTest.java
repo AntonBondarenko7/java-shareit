@@ -33,7 +33,6 @@ class ItemControllerTest {
     void getAllItemsByUser_whenInvokedDefault_thenResponseStatusOkWithEmptyBody() {
         Long userId = 0L;
         List<ItemDto> response = itemController.getAllItemsByUser(userId, 0, 0);
-        
         assertTrue(response.isEmpty());
         verify(itemService, times(1)).getAllItemsByUser(userId, 0, 0);
     }
@@ -45,7 +44,6 @@ class ItemControllerTest {
         when(itemService.getAllItemsByUser(userId, 0, 0)).thenReturn(expectedItems);
 
         List<ItemDto> response = itemController.getAllItemsByUser(userId, 0, 0);
-        
         assertThat(expectedItems, equalTo(response));
         verify(itemService, times(1)).getAllItemsByUser(userId, 0, 0);
     }
@@ -58,7 +56,6 @@ class ItemControllerTest {
         when(itemService.getItemById(itemId, userId)).thenReturn(expectedItem);
 
         ItemDto response = itemController.getItemById(itemId, userId);
-        
         assertThat(expectedItem, equalTo(response));
         verify(itemService, times(1)).getItemById(itemId, userId);
     }

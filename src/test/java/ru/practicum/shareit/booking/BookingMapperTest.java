@@ -20,9 +20,9 @@ class BookingMapperTest {
 
     @Test
     void toBookingResponseDto() {
-        BookingResponseDto BookingResponseDto = bookingMapper.toBookingResponseDto(null);
+        BookingResponseDto BookingResponseDTO = bookingMapper.toBookingResponseDto(null);
 
-        assertThat(BookingResponseDto, nullValue());
+        assertThat(BookingResponseDTO, nullValue());
     }
 
     @Test
@@ -30,9 +30,9 @@ class BookingMapperTest {
         Booking booking = new Booking();
         booking.setId(1L);
 
-        BookingOwnerDto BookingOwnerDto = bookingMapper.toBookingOwnerDto(booking);
+        BookingOwnerDto BookingOwnerDTO = bookingMapper.toBookingOwnerDto(booking);
 
-        assertThat(BookingOwnerDto.getId(), equalTo(booking.getId()));
+        assertThat(BookingOwnerDTO.getId(), equalTo(booking.getId()));
     }
 
     @Test
@@ -42,9 +42,9 @@ class BookingMapperTest {
         booking.setId(1L);
         booking.setBooker(user);
 
-        BookingOwnerDto BookingOwnerDto = bookingMapper.toBookingOwnerDto(booking);
+        BookingOwnerDto BookingOwnerDTO = bookingMapper.toBookingOwnerDto(booking);
 
-        assertThat(BookingOwnerDto.getId(), equalTo(booking.getId()));
+        assertThat(BookingOwnerDTO.getId(), equalTo(booking.getId()));
     }
 
     @Test
@@ -55,10 +55,10 @@ class BookingMapperTest {
         booking.setId(1L);
         booking.setBooker(user);
 
-        BookingOwnerDto BookingOwnerDto = bookingMapper.toBookingOwnerDto(booking);
+        BookingOwnerDto BookingOwnerDTO = bookingMapper.toBookingOwnerDto(booking);
 
-        assertThat(BookingOwnerDto.getId(), equalTo(booking.getId()));
-        assertThat(BookingOwnerDto.getBookerId(), equalTo(booking.getBooker().getId()));
+        assertThat(BookingOwnerDTO.getId(), equalTo(booking.getId()));
+        assertThat(BookingOwnerDTO.getBookerId(), equalTo(booking.getBooker().getId()));
     }
 
     @Test

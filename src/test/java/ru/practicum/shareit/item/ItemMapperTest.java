@@ -18,10 +18,10 @@ class ItemMapperTest {
 
     @Test
     void toItemOwnerDto() {
-        ItemOwnerDto ItemOwnerDto = itemMapper
+        ItemOwnerDto ItemOwnerDTO = itemMapper
                 .toItemOwnerDto(null, null, null, null);
 
-        assertThat(ItemOwnerDto, nullValue());
+        assertThat(ItemOwnerDTO, nullValue());
     }
 
     @Test

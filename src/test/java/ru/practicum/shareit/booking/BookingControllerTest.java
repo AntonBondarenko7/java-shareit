@@ -50,7 +50,6 @@ class BookingControllerTest {
 
         List<BookingResponseDto> response = bookingController
                 .getAllBookingsByUser(userId, BookingState.ALL, 0, 0);
-        
         assertThat(expectedBookings, equalTo(response));
         verify(bookingService, times(1))
                 .getAllBookingsByUser(userId, BookingState.ALL, 0, 0);
@@ -61,7 +60,6 @@ class BookingControllerTest {
         Long userId = 0L;
         List<BookingResponseDto> response = bookingController
                 .getAllBookingsAllItemsByOwner(userId, BookingState.ALL, 0, 0);
-        
         assertTrue(response.isEmpty());
         verify(bookingService, times(1))
                 .getAllBookingsAllItemsByOwner(userId, BookingState.ALL, 0, 0);
