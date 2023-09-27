@@ -54,9 +54,9 @@ class BookingControllerIntegrationTest {
     private BookingService bookingService;
 
     private final Long userId = 0L;
-    private BookingRequestDto BookingRequestDTO;
-    private BookingResponseDto BookingResponseDTO;
-    private BookingResponseDto BookingResponseDTO2;
+    private BookingRequestDto bookingRequestDto;
+    private BookingResponseDto bookingResponseDto;
+    private BookingResponseDto bookingResponseDto2;
 
     @BeforeEach
     public void addBookings() {
@@ -82,33 +82,33 @@ class BookingControllerIntegrationTest {
         Item item2 = ItemMapper.INSTANCE.toItem(itemDto2, user);
         item2.setId(itemDto2.getId());
 
-        BookingRequestDTO = new BookingRequestDto();
-        BookingRequestDTO.setId(1L);
-        BookingRequestDTO.setStart(LocalDateTime.now().plusMinutes(5));
-        BookingRequestDTO.setEnd(LocalDateTime.now().plusHours(1));
-        BookingRequestDTO.setItemId(itemDto.getId());
-        BookingRequestDTO.setBooker(userDto);
-        BookingRequestDTO.setStatus(BookingStatus.WAITING);
-        Booking booking = BookingMapper.INSTANCE.toBooking(BookingRequestDTO, user, item);
-        booking.setId(BookingRequestDTO.getId());
-        BookingResponseDTO = BookingMapper.INSTANCE.toBookingResponseDto(booking);
+        bookingRequestDto = new BookingRequestDto();
+        bookingRequestDto.setId(1L);
+        bookingRequestDto.setStart(LocalDateTime.now().plusMinutes(5));
+        bookingRequestDto.setEnd(LocalDateTime.now().plusHours(1));
+        bookingRequestDto.setItemId(itemDto.getId());
+        bookingRequestDto.setBooker(userDto);
+        bookingRequestDto.setStatus(BookingStatus.WAITING);
+        Booking booking = BookingMapper.INSTANCE.toBooking(bookingRequestDto, user, item);
+        booking.setId(bookingRequestDto.getId());
+        bookingResponseDto = BookingMapper.INSTANCE.toBookingResponseDto(booking);
 
-        BookingRequestDto BookingRequestDTO2 = new BookingRequestDto();
-        BookingRequestDTO2.setId(2L);
-        BookingRequestDTO2.setStart(LocalDateTime.now().plusMinutes(5));
-        BookingRequestDTO2.setEnd(LocalDateTime.now().plusHours(3));
-        BookingRequestDTO2.setItemId(itemDto2.getId());
-        BookingRequestDTO2.setBooker(userDto);
-        BookingRequestDTO2.setStatus(BookingStatus.WAITING);
-        Booking booking2 = BookingMapper.INSTANCE.toBooking(BookingRequestDTO2, user, item2);
-        booking2.setId(BookingRequestDTO2.getId());
-        BookingResponseDTO2 = BookingMapper.INSTANCE.toBookingResponseDto(booking2);
+        BookingRequestDto bookingRequestDto2 = new BookingRequestDto();
+        bookingRequestDto2.setId(2L);
+        bookingRequestDto2.setStart(LocalDateTime.now().plusMinutes(5));
+        bookingRequestDto2.setEnd(LocalDateTime.now().plusHours(3));
+        bookingRequestDto2.setItemId(itemDto2.getId());
+        bookingRequestDto2.setBooker(userDto);
+        bookingRequestDto2.setStatus(BookingStatus.WAITING);
+        Booking booking2 = BookingMapper.INSTANCE.toBooking(bookingRequestDto2, user, item2);
+        booking2.setId(bookingRequestDto2.getId());
+        bookingResponseDto2 = BookingMapper.INSTANCE.toBookingResponseDto(booking2);
     }
 
     @SneakyThrows
     @Test
     void getAllBookingsByUser_whenInvoked_thenResponseStatusOkWithBookingsCollectionInBody() {
-        List<BookingResponseDto> bookings = Arrays.asList(BookingResponseDTO, BookingResponseDTO2);
+        List<BookingResponseDto> bookings = Arrays.asList(bookingResponseDto, bookingResponseDto2);
         when(bookingService.getAllBookingsByUser(anyLong(), any(), anyInt(), anyInt()))
                 .thenReturn(bookings);
 
@@ -153,7 +153,7 @@ class BookingControllerIntegrationTest {
     @SneakyThrows
     @Test
     void getAllBookingsAllItemsByOwner_whenInvoked_thenResponseStatusOkWithBookingsCollectionInBody() {
-        List<BookingResponseDto> bookings = Arrays.asList(BookingResponseDTO, BookingResponseDTO2);
+        List<BookingResponseDto> bookings = Arrays.asList(bookingResponseDto, bookingResponseDto2);
         when(bookingService.getAllBookingsAllItemsByOwner(anyLong(), any(), anyInt(), anyInt()))
                 .thenReturn(bookings);
 
@@ -179,7 +179,7 @@ class BookingControllerIntegrationTest {
     @Test
     void getBookingById_whenBookingFound_thenReturnedBooking() {
         long bookingId = 0L;
-        when(bookingService.getBookingById(anyLong(), anyLong())).thenReturn(BookingResponseDTO);
+        when(bookingService.getBookingById(anyLong(), anyLong())).thenReturn(bookingResponseDto);
 
         String result = mockMvc.perform(get("/bookings/{bookingId}", bookingId)
                         .header(Constants.HEADER_USER_ID, userId)
@@ -191,27 +191,27 @@ class BookingControllerIntegrationTest {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        assertThat(objectMapper.writeValueAsString(BookingResponseDTO), equalTo(result));
+        assertThat(objectMapper.writeValueAsString(bookingResponseDto), equalTo(result));
         verify(bookingService, times(1)).getBookingById(bookingId, userId);
     }
 
     @SneakyThrows
     @Test
     void createBooking_whenBookingValid_thenSavedBooking() {
-        when(bookingService.createBooking(any(BookingRequestDto.class), anyLong())).thenReturn(BookingResponseDTO);
+        when(bookingService.createBooking(any(BookingRequestDto.class), anyLong())).thenReturn(bookingResponseDto);
 
         String result = mockMvc.perform(post("/bookings")
                         .header(Constants.HEADER_USER_ID, userId)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(BookingRequestDTO)))
+                        .content(objectMapper.writeValueAsString(bookingRequestDto)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        assertThat(objectMapper.writeValueAsString(BookingResponseDTO), equalTo(result));
+        assertThat(objectMapper.writeValueAsString(bookingResponseDto), equalTo(result));
         verify(bookingService, times(1))
                 .createBooking(any(BookingRequestDto.class), anyLong());
     }
@@ -219,13 +219,13 @@ class BookingControllerIntegrationTest {
     @SneakyThrows
     @Test
     void createBooking_whenBookingNotValid__thenResponseStatusBadRequest() {
-        BookingRequestDTO.setStart(LocalDateTime.now().minusMinutes(10));
+        bookingRequestDto.setStart(LocalDateTime.now().minusMinutes(10));
 
         String result = mockMvc.perform(post("/bookings")
                         .header(Constants.HEADER_USER_ID, userId)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(BookingRequestDTO)))
+                        .content(objectMapper.writeValueAsString(bookingRequestDto)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -241,21 +241,21 @@ class BookingControllerIntegrationTest {
     @Test
     void updateBooking_whenBookingValid_thenUpdatedBooking() {
         long bookingId = 0L;
-        when(bookingService.updateBooking(anyLong(), anyBoolean(), anyLong())).thenReturn(BookingResponseDTO2);
+        when(bookingService.updateBooking(anyLong(), anyBoolean(), anyLong())).thenReturn(bookingResponseDto2);
 
         String result = mockMvc.perform(patch("/bookings/{bookingId}", bookingId)
                         .header(Constants.HEADER_USER_ID, userId)
                         .param("approved", "true")
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(BookingResponseDTO2)))
+                        .content(objectMapper.writeValueAsString(bookingResponseDto2)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        assertThat(objectMapper.writeValueAsString(BookingResponseDTO2), equalTo(result));
+        assertThat(objectMapper.writeValueAsString(bookingResponseDto2), equalTo(result));
         verify(bookingService, times(1))
                 .updateBooking(bookingId, true, userId);
     }
@@ -269,7 +269,7 @@ class BookingControllerIntegrationTest {
                         .header(Constants.HEADER_USER_ID, userId)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(BookingResponseDTO2)))
+                        .content(objectMapper.writeValueAsString(bookingResponseDto2)))
                 .andDo(print())
                 .andExpect(status().isInternalServerError())
                 .andReturn()
