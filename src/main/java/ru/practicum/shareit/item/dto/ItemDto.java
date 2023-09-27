@@ -14,7 +14,7 @@ public class ItemDto {
     private String name;
     @NotBlank(message = "Описание не может быть пустым")
     private String description;
-    @NotNull(message = "Доступность не может быть пустым")
+    @NotNull(message = "Доступность не может быть пустой")
     private Boolean available;
     private Long requestId;
 

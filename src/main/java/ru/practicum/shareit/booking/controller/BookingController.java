@@ -58,16 +58,17 @@ public class BookingController {
 
     @PostMapping
     @Validated
-    public BookingResponseDto saveBooking(@Valid @RequestBody BookingRequestDto bookingRequestDto,
+    public BookingResponseDto createBooking(@Valid @RequestBody BookingRequestDto bookingRequestDto,
                                                      @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
         BookingResponseDto bookingResponseDto = bookingService.createBooking(bookingRequestDto, userId);
         log.info("Добавлен новый запрос на бронирование: {}", bookingResponseDto);
         return bookingResponseDto;
     }
 
+
     @PatchMapping("/{bookingId}")
-    public BookingResponseDto updateItem(@PathVariable Long bookingId, @RequestParam Boolean approved,
-                                                    @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
+    public BookingResponseDto updateBooking(@PathVariable Long bookingId, @RequestParam Boolean approved,
+                                            @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
         BookingResponseDto bookingResponseDto = bookingService.updateBooking(bookingId, approved, userId);
         log.info("Обновлено бронирование: {}.", bookingResponseDto);
         return bookingResponseDto;

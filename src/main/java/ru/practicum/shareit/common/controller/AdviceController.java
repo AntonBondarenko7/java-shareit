@@ -14,6 +14,8 @@ import ru.practicum.shareit.common.exception.NotFoundException;
 import ru.practicum.shareit.common.exception.NotSavedException;
 import ru.practicum.shareit.common.exception.ValidationException;
 
+import java.util.Objects;
+
 
 @RestControllerAdvice
 @Slf4j
@@ -32,31 +34,48 @@ public class AdviceController {
         return "Ошибка: " + e.getMessage();
     }
 
-    @ExceptionHandler({ MethodArgumentNotValidException.class, ValidationException.class,
-            HttpMessageNotReadableException.class, MissingRequestHeaderException.class,
-            MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler({ValidationException.class, HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationExceptions(final RuntimeException e) {
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler({MissingRequestHeaderException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingRequestHeaderException(final MissingRequestHeaderException e) {
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        String message = Objects.requireNonNull(e.getFieldError()).getDefaultMessage();
+        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", message, e);
+        return new ErrorResponse(message);
+    }
+
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentTypeMismatchException(final RuntimeException e) {
         String message;
-        if (e instanceof MethodArgumentTypeMismatchException) {
-            MethodArgumentTypeMismatchException typeMismatchException = (MethodArgumentTypeMismatchException) e;
-            if ("state".equals(typeMismatchException.getName())) {
-                message = "Unknown state: " + typeMismatchException.getValue();
-            } else {
-                message = typeMismatchException.getMessage();
-            }
+        if (((MethodArgumentTypeMismatchException) e).getName().equals("state")) {
+            message = "Unknown state: " + ((MethodArgumentTypeMismatchException) e).getValue();
         } else {
             message = e.getMessage();
         }
         log.debug("Ошибка валидации: 400 BAD_REQUEST {}", message, e);
-        return new ErrorResponse(message);
+        return new ErrorResponse(
+                message
+        );
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleAllUnhandledExceptions(final Throwable e) {
         log.debug("Ошибка: 500 INTERNAL_SERVER_ERROR {}", e.getMessage(), e);
-        return "Ошибка: " + e.getMessage();
+        return "Произошла непредвиденная ошибка.";
     }
 
 }

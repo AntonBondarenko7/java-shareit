@@ -54,7 +54,7 @@ public class ItemRequestService {
     }
 
     @Transactional
-    public ItemRequestDto saveItemRequest(ItemRequestDto itemRequestDto, Long userId) {
+    public ItemRequestDto createItemRequest(ItemRequestDto itemRequestDto, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(userId));
 

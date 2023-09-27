@@ -55,7 +55,7 @@ public class ItemRequestController {
     public ItemRequestDto saveItemRequest(
             @Valid @RequestBody ItemRequestDto itemRequestDto,
             @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
-        itemRequestDto = itemRequestService.saveItemRequest(itemRequestDto, userId);
+        itemRequestDto = itemRequestService.createItemRequest(itemRequestDto, userId);
         log.info("Добавлен новый запрос на бронирование: {}", itemRequestDto);
         return itemRequestDto;
     }
