@@ -107,7 +107,7 @@ class BookingControllerIntegrationTest {
 
     @SneakyThrows
     @Test
-    void getAllBookingsByUser_whenInvoked_thenResponseStatusOkWithBookingsCollectionInBody() {
+    void getAllBookingsByUser_whenInvoked_thenResponseWithBookingsCollectionInBody() {
         List<BookingResponseDto> bookings = Arrays.asList(bookingResponseDto, bookingResponseDto2);
         when(bookingService.getAllBookingsByUser(anyLong(), any(), anyInt(), anyInt()))
                 .thenReturn(bookings);

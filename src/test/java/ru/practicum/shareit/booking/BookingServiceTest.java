@@ -5,6 +5,7 @@ import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.booking.exception.BookingNotSavedException;
 import ru.practicum.shareit.booking.exception.BookingItemOwnerException;
+import ru.practicum.shareit.booking.exception.OtherBookerException;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
@@ -359,27 +360,27 @@ class BookingServiceTest {
         verify(bookingRepository, times(1)).findById(bookingId);
     }
 
-//    @Test
-//    void getBookingById_whenBookingNotValid_thenExceptionThrown() {
-//        long userId = 0L;
-//        User user = new User();
-//        user.setId(userId);
-//        Item item = new Item();
-//        item.setOwner(user);
-//
-//        long bookingId = 0L;
-//        Booking expectedBooking = new Booking();
-//        expectedBooking.setItem(item);
-//        expectedBooking.setBooker(user);
-//        when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(expectedBooking));
-//
-//        final OtherBookerException exception = assertThrows(OtherBookerException.class,
-//                () -> bookingService.getBookingById(bookingId, 1L));
-//
-//        assertThat("Пользователь с id = 1 не осуществлял бронирование с id = 0",
-//                equalTo(exception.getMessage()));
-//        verify(bookingRepository, times(1)).findById(anyLong());
-//    }
+    @Test
+    void getBookingById_whenBookingNotValid_thenExceptionThrown() {
+        long userId = 0L;
+        User user = new User();
+        user.setId(userId);
+        Item item = new Item();
+        item.setOwner(user);
+
+        long bookingId = 1L;
+        Booking expectedBooking = new Booking();
+        expectedBooking.setItem(item);
+        expectedBooking.setBooker(user);
+        when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(expectedBooking));
+
+        final OtherBookerException exception = assertThrows(OtherBookerException.class,
+                () -> bookingService.getBookingById(bookingId, 1L));
+
+        assertThat("Пользователь с id = 1 не осуществлял бронирование с id = 1",
+                equalTo(exception.getMessage()));
+        verify(bookingRepository, times(1)).findById(anyLong());
+    }
 
     @Test
     void createBooking_whenBookingValid_thenSavedBooking() {
