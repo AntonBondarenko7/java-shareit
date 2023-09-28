@@ -34,41 +34,23 @@ public class AdviceController {
         return "Ошибка: " + e.getMessage();
     }
 
-    @ExceptionHandler({ValidationException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({ValidationException.class, HttpMessageNotReadableException.class,
+            MissingRequestHeaderException.class, MethodArgumentNotValidException.class,
+            MethodArgumentTypeMismatchException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationExceptions(final RuntimeException e) {
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler({MissingRequestHeaderException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMissingRequestHeaderException(final MissingRequestHeaderException e) {
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", e.getMessage(), e);
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        String message = Objects.requireNonNull(e.getFieldError()).getDefaultMessage();
-        log.debug("Ошибка валидации: 400 BAD_REQUEST {}", message, e);
-        return new ErrorResponse(message);
-    }
-
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentTypeMismatchException(final RuntimeException e) {
+    public ErrorResponse handleValidationExceptions(final Exception e) {
         String message;
-        if (((MethodArgumentTypeMismatchException) e).getName().equals("state")) {
+        if (e instanceof MethodArgumentNotValidException) {
+            message = Objects.requireNonNull(Objects.requireNonNull(((MethodArgumentNotValidException) e)
+                    .getFieldError()).getDefaultMessage());
+        } else if (e instanceof MethodArgumentTypeMismatchException
+                && ((MethodArgumentTypeMismatchException) e).getName().equals("state")) {
             message = "Unknown state: " + ((MethodArgumentTypeMismatchException) e).getValue();
         } else {
             message = e.getMessage();
         }
         log.debug("Ошибка валидации: 400 BAD_REQUEST {}", message, e);
-        return new ErrorResponse(
-                message
-        );
+        return new ErrorResponse(message);
     }
 
     @ExceptionHandler
