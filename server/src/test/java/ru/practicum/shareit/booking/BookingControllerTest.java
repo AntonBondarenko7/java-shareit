@@ -12,7 +12,6 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,7 +43,7 @@ class BookingControllerTest {
     @Test
     void getAllBookingsByUser_whenInvoked_thenResponseStatusOkWithBookingsCollectionInBody() {
         Long userId = 0L;
-        List<BookingResponseDto> expectedBookings = Arrays.asList(new BookingResponseDto());
+        List<BookingResponseDto> expectedBookings = List.of(new BookingResponseDto());
         when(bookingService.getAllBookingsByUser(userId, BookingState.ALL, 0, 0)).thenReturn(expectedBookings);
 
         List<BookingResponseDto> response = bookingController
@@ -67,7 +66,7 @@ class BookingControllerTest {
     @Test
     void getAllBookingsAllItemsByOwner_whenInvoked_thenResponseStatusOkWithBookingsCollectionInBody() {
         Long userId = 0L;
-        List<BookingResponseDto> expectedBookings = Arrays.asList(new BookingResponseDto());
+        List<BookingResponseDto> expectedBookings = List.of(new BookingResponseDto());
         when(bookingService.getAllBookingsAllItemsByOwner(userId, BookingState.ALL, 0, 0))
                 .thenReturn(expectedBookings);
 

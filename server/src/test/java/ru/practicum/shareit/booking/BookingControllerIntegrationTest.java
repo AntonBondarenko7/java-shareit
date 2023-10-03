@@ -18,13 +18,13 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.common.utils.Constants;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.common.utils.Constants;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -213,27 +213,6 @@ class BookingControllerIntegrationTest {
         verify(bookingService, times(1))
                 .createBooking(anyLong(), any(BookingRequestDto.class));
     }
-
-//    @SneakyThrows
-//    @Test
-//    void createBooking_whenBookingNotValid__thenResponseStatusBadRequest() {
-//        bookingRequestDto.setStart(LocalDateTime.now().minusMinutes(10));
-//
-//        String result = mockMvc.perform(post("/bookings")
-//                        .header(Constants.HEADER_USER_ID, userId)
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(bookingRequestDto)))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andReturn()
-//                .getResponse()
-//                .getContentAsString(StandardCharsets.UTF_8);
-//
-//        assertThat("{\"error\":\"Дата и время начала бронирования не могут быть в прошлом.\"}",
-//                equalTo(result));
-//        verify(bookingService, never()).createBooking(anyLong(), any(BookingRequestDto.class));
-//    }
 
     @SneakyThrows
     @Test

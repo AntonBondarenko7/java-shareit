@@ -11,11 +11,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.comment.dto.CommentDto;
+import ru.practicum.shareit.common.utils.Constants;
 import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.common.utils.Constants;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -141,27 +141,6 @@ class ItemControllerIntegrationTest {
         verify(itemService, times(1)).createItem(userId, itemDto);
     }
 
-//    @SneakyThrows
-//    @Test
-//    void createItem_whenItemNotValid_thenSavedItem() {
-//        itemDto.setName("");
-//
-//        String result = mockMvc.perform(post("/items")
-//                        .header(Constants.HEADER_USER_ID, userId)
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(itemDto)))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andReturn()
-//                .getResponse()
-//                .getContentAsString(StandardCharsets.UTF_8);
-//
-//        assertThat("{\"error\":\"Название не может быть пустым\"}",
-//                equalTo(result));
-//        verify(itemService, never()).createItem(userId, itemDto);
-//    }
-
     @SneakyThrows
     @Test
     void updateItem_whenItemValid_thenUpdatedItem() {
@@ -229,27 +208,5 @@ class ItemControllerIntegrationTest {
         assertThat(objectMapper.writeValueAsString(commentDto), equalTo(result));
         verify(itemService, times(1)).saveComment(userId, commentDto, itemId);
     }
-
-//    @SneakyThrows
-//    @Test
-//    void saveComment_whenCommentNotValid_thenExceptionThrown() {
-//        long itemId = 0L;
-//        CommentDto commentDto = new CommentDto();
-//
-//        String result = mockMvc.perform(post("/items/{itemId}/comment", itemId)
-//                        .header(Constants.HEADER_USER_ID, userId)
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(commentDto)))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andReturn()
-//                .getResponse()
-//                .getContentAsString(StandardCharsets.UTF_8);
-//
-//        assertThat("{\"error\":\"Ошибка! Текст комментария не может быть пустым.\"}",
-//                equalTo(result));
-//        verify(itemService, never()).saveComment(userId, commentDto, itemId);
-//    }
 
 }

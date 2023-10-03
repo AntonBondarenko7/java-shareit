@@ -57,7 +57,7 @@ class ItemRequestServiceTest {
     }
 
     @Test
-    void getAllItemRequestsByUser_whenInvoked_thenReturneItemRequestsCollectionInList() {
+    void getAllItemRequestsByUser_whenInvoked_thenReturnItemRequestsCollectionInList() {
         Long userId = 0L;
         List<ItemRequest> expectedItemRequests = Arrays.asList(new ItemRequest(), new ItemRequest());
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
@@ -102,7 +102,7 @@ class ItemRequestServiceTest {
     }
 
     @Test
-    void getAllItemRequestsByOtherUsers_whenInvoked_thenReturneItemRequestsCollectionInList() {
+    void getAllItemRequestsByOtherUsers_whenInvoked_thenReturnItemRequestsCollectionInList() {
         Long userId = 0L;
         List<ItemRequest> expectedItemRequests = Arrays.asList(new ItemRequest(), new ItemRequest());
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));

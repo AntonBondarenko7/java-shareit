@@ -61,7 +61,7 @@ class ItemRepositoryTest {
     @Test
     @Order(1)
     void findAllByOwnerId() {
-        List<Item> actualItems = itemRepository.findAllByOwnerId(user.getId(), PageRequest.of(1, 1));
+        List<Item> actualItems = itemRepository.findAllByOwnerIdOrderById(user.getId(), PageRequest.of(1, 1));
 
         assertThat(1, equalTo(actualItems.size()));
         assertThat(item2, equalTo(actualItems.get(0)));

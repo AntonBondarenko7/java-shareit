@@ -72,7 +72,7 @@ class ItemServiceTest {
         verify(itemRepository, never()).findById(anyLong());
         verify(commentRepository, never()).findAllByItemId(anyLong());
         verify(itemRepository, times(1))
-                .findAllByOwnerId(anyLong(), any(Pageable.class));
+                .findAllByOwnerIdOrderById(anyLong(), any(Pageable.class));
     }
 
     @Test
@@ -84,9 +84,9 @@ class ItemServiceTest {
         Item item = new Item();
         item.setId(itemId);
         item.setOwner(user);
-        List<Item> expectedItems = Arrays.asList(item);
+        List<Item> expectedItems = List.of(item);
 
-        when(itemRepository.findAllByOwnerId(anyLong(), any(Pageable.class))).thenReturn(expectedItems);
+        when(itemRepository.findAllByOwnerIdOrderById(anyLong(), any(Pageable.class))).thenReturn(expectedItems);
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
 
         List<ItemDto> actualItems = itemService.getAllItemsByUser(userId, 0, 1);
@@ -100,7 +100,7 @@ class ItemServiceTest {
 
         InOrder inOrder = inOrder(itemRepository, commentRepository);
         inOrder.verify(itemRepository, times(1))
-                .findAllByOwnerId(anyLong(), any(Pageable.class));
+                .findAllByOwnerIdOrderById(anyLong(), any(Pageable.class));
         inOrder.verify(itemRepository, times(1)).findById(anyLong());
         inOrder.verify(commentRepository, times(1)).findAllByItemId(anyLong());
     }
@@ -161,12 +161,12 @@ class ItemServiceTest {
                 any(LocalDateTime.class), any(Sort.class))).thenReturn(Optional.of(lastBooking));
         when(bookingRepository.findFirstByItemIdAndStatusAndStartIsAfter(anyLong(), any(BookingStatus.class),
                 any(LocalDateTime.class), any(Sort.class))).thenReturn(Optional.of(nextBooking));
-        when(commentRepository.findAllByItemId(anyLong())).thenReturn(Arrays.asList(comment));
+        when(commentRepository.findAllByItemId(anyLong())).thenReturn(List.of(comment));
 
         ItemDto actualItem = itemService.getItemById(userId, itemId);
 
         assertThat(ItemMapper.INSTANCE.toItemOwnerDto(expectedItem,
-                lastBooking, nextBooking, Arrays.asList(comment)), equalTo(actualItem));
+                lastBooking, nextBooking, List.of(comment)), equalTo(actualItem));
         InOrder inOrder = inOrder(itemRepository, bookingRepository, commentRepository);
         inOrder.verify(itemRepository, times(1)).findById(itemId);
         inOrder.verify(bookingRepository, times(1))

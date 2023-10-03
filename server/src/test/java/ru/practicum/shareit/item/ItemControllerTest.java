@@ -11,7 +11,6 @@ import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,7 +38,7 @@ class ItemControllerTest {
     @Test
     void getAllItemsByUser_whenInvoked_thenResponseStatusOkWithItemsCollectionInBody() {
         Long userId = 0L;
-        List<ItemDto> expectedItems = Arrays.asList(new ItemDto());
+        List<ItemDto> expectedItems = List.of(new ItemDto());
         when(itemService.getAllItemsByUser(userId, 0, 0)).thenReturn(expectedItems);
 
         List<ItemDto> response = itemController.getAllItemsByUser(userId, 0, 0);
@@ -99,7 +98,7 @@ class ItemControllerTest {
     @Test
     void findItems_whenInvoked_thenResponseStatusOkWithItemsCollectionInBody() {
         Long userId = 0L;
-        List<ItemDto> expectedItems = Arrays.asList(new ItemDto());
+        List<ItemDto> expectedItems = List.of(new ItemDto());
         Mockito.when(itemService.findItems(userId, "", 0, 0)).thenReturn(expectedItems);
 
         List<ItemDto> response = itemController.findItems(userId, "", 0, 0);

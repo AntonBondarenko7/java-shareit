@@ -168,25 +168,6 @@ class UserControllerIntegrationTest {
         verify(userService, times(1)).createUser(userDto);
     }
 
-//    @SneakyThrows
-//    @Test
-//    void saveUser_whenUserNotSaves_thenReturnedBadRequest() {
-//        userDto.setEmail(null);
-//
-//        String result = mockMvc.perform(post("/users")
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(userDto)))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest())
-//                .andReturn()
-//                .getResponse()
-//                .getContentAsString(StandardCharsets.UTF_8);
-//
-//        assertThat("{\"error\":\"email не может быть пустым\"}", equalTo(result));
-//        verify(userService, never()).createUser(userDto);
-//    }
-
     @SneakyThrows
     @Test
     void updateUser_whenUserValid_thenUpdatedUser() {

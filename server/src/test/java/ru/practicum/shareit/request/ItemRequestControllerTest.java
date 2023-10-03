@@ -9,7 +9,6 @@ import ru.practicum.shareit.request.controller.ItemRequestController;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,7 +38,7 @@ class ItemRequestControllerTest {
     @Test
     void getAllItemRequestsByUser_whenInvoked_thenResponseStatusOkWithItemRequestsCollectionInBody() {
         Long userId = 0L;
-        List<ItemRequestDto> expectedItemRequests = Arrays.asList(new ItemRequestDto());
+        List<ItemRequestDto> expectedItemRequests = List.of(new ItemRequestDto());
         when(itemRequestService.getAllItemRequestsByUser(userId)).thenReturn(expectedItemRequests);
 
         List<ItemRequestDto> response = itemRequestController
@@ -65,7 +64,7 @@ class ItemRequestControllerTest {
     @Test
     void getAllItemRequestsByOtherUsers_whenInvoked_thenResponseStatusOkWithItemRequestsCollectionInBody() {
         Long userId = 0L;
-        List<ItemRequestDto> expectedItemRequests = Arrays.asList(new ItemRequestDto());
+        List<ItemRequestDto> expectedItemRequests = List.of(new ItemRequestDto());
         when(itemRequestService.getAllItemRequestsByOtherUsers(userId, 0, 0))
                 .thenReturn(expectedItemRequests);
 

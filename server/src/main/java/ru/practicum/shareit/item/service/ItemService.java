@@ -15,6 +15,7 @@ import ru.practicum.shareit.comment.mapper.CommentMapper;
 import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.common.utils.ValidPage;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.ItemNotSavedException;
@@ -27,7 +28,6 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.common.utils.ValidPage;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -50,7 +50,7 @@ public class ItemService {
         ValidPage.validate(from, size);
         PageRequest page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
 
-        return itemRepository.findAllByOwnerId(userId, page)
+        return itemRepository.findAllByOwnerIdOrderById(userId, page)
                 .stream()
                 .map(item -> getItemById(userId, item.getId()))
                 .collect(Collectors.toList());
