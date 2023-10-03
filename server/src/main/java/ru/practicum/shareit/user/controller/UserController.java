@@ -1,19 +1,17 @@
 package ru.practicum.shareit.user.controller;
 
 
-import ru.practicum.shareit.controller.AdviceController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
-public class UserController extends AdviceController {
+public class UserController {
 
     private final UserService userService;
 

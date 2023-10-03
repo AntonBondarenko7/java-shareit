@@ -1,5 +1,6 @@
 package ru.practicum.shareit.comment;
 
+import org.junit.jupiter.api.Test;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.comment.mapper.CommentMapperImpl;
 import ru.practicum.shareit.comment.model.Comment;
@@ -9,8 +10,6 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

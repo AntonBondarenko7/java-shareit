@@ -1,16 +1,6 @@
 package ru.practicum.shareit.request;
 
-import ru.practicum.shareit.utils.Constants;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.request.controller.ItemRequestController;
-import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.service.ItemRequestService;
-import ru.practicum.shareit.user.dto.UserDto;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,12 +10,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.request.controller.ItemRequestController;
+import ru.practicum.shareit.request.dto.ItemRequestDto;
+import ru.practicum.shareit.request.service.ItemRequestService;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.common.utils.Constants;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -97,12 +95,14 @@ class ItemRequestControllerIntegrationTest {
     @SneakyThrows
     @Test
     void getAllItemRequestsByOtherUsers_whenInvoked_thenResponseStatusOkWithItemRequestsCollectionInBody() {
-        List<ItemRequestDto> itemRequests = Arrays.asList(itemRequestDto, itemRequestDto2);
+        List<ItemRequestDto> itemRequests = List.of(itemRequestDto, itemRequestDto2);
         when(itemRequestService.getAllItemRequestsByOtherUsers(anyLong(), anyInt(), anyInt()))
                 .thenReturn(itemRequests);
 
         String result = mockMvc.perform(get("/requests/all")
                         .header(Constants.HEADER_USER_ID, userId)
+                        .param("from", "0")
+                        .param("size", "10")
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

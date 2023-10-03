@@ -1,27 +1,6 @@
 package ru.practicum.shareit.booking;
 
-import ru.practicum.shareit.booking.controller.BookingController;
-
-import ru.practicum.shareit.booking.dto.BookingRequestDto;
-import ru.practicum.shareit.booking.dto.BookingResponseDto;
-import ru.practicum.shareit.booking.mapper.BookingMapper;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingState;
-import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.utils.Constants;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.mapper.UserMapper;
-import ru.practicum.shareit.user.model.User;
-
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +10,26 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.practicum.shareit.booking.controller.BookingController;
+import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.dto.BookingResponseDto;
+import ru.practicum.shareit.booking.mapper.BookingMapper;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingState;
+import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.common.utils.Constants;
+
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -216,26 +214,26 @@ class BookingControllerIntegrationTest {
                 .createBooking(anyLong(), any(BookingRequestDto.class));
     }
 
-    @SneakyThrows
-    @Test
-    void createBooking_whenBookingNotValid__thenResponseStatusBadRequest() {
-        bookingRequestDto.setStart(LocalDateTime.now().minusMinutes(10));
-
-        String result = mockMvc.perform(post("/bookings")
-                        .header(Constants.HEADER_USER_ID, userId)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookingRequestDto)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(StandardCharsets.UTF_8);
-
-        assertThat("{\"error\":\"Дата и время начала бронирования не могут быть в прошлом.\"}",
-                equalTo(result));
-        verify(bookingService, never()).createBooking(anyLong(), any(BookingRequestDto.class));
-    }
+//    @SneakyThrows
+//    @Test
+//    void createBooking_whenBookingNotValid__thenResponseStatusBadRequest() {
+//        bookingRequestDto.setStart(LocalDateTime.now().minusMinutes(10));
+//
+//        String result = mockMvc.perform(post("/bookings")
+//                        .header(Constants.HEADER_USER_ID, userId)
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(bookingRequestDto)))
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                .andReturn()
+//                .getResponse()
+//                .getContentAsString(StandardCharsets.UTF_8);
+//
+//        assertThat("{\"error\":\"Дата и время начала бронирования не могут быть в прошлом.\"}",
+//                equalTo(result));
+//        verify(bookingService, never()).createBooking(anyLong(), any(BookingRequestDto.class));
+//    }
 
     @SneakyThrows
     @Test

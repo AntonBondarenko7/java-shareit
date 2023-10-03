@@ -1,4 +1,4 @@
-package ru.practicum.shareit.exception;
+package ru.practicum.shareit.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

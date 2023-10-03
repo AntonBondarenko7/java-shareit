@@ -1,5 +1,7 @@
 package ru.practicum.shareit.request;
 
+import org.assertj.core.util.Sets;
+import org.junit.jupiter.api.Test;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
@@ -9,9 +11,6 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.Instant;
 import java.util.List;
-
-import org.assertj.core.util.Sets;
-import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

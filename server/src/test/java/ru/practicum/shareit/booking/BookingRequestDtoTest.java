@@ -1,20 +1,18 @@
 package ru.practicum.shareit.booking;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.JsonTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import static ru.practicum.shareit.utils.Constants.FORMATTER_FOR_BOOKING;
-
 import java.time.LocalDateTime;
 
-import org.springframework.boot.test.autoconfigure.json.JsonTest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.json.JsonContent;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.practicum.shareit.common.utils.Constants.FORMATTER_FOR_BOOKING;
 
 @JsonTest
 class BookingRequestDtoTest {

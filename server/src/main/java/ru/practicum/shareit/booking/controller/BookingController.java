@@ -1,16 +1,14 @@
 package ru.practicum.shareit.booking.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.common.utils.Constants;
 
 import java.util.List;
-
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.utils.Constants;
 
 @RestController
 @RequiredArgsConstructor

@@ -2,14 +2,15 @@ package ru.practicum.shareit.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
-import static ru.practicum.shareit.utils.Constants.PATTERN_FOR_DATETIME;
+import static ru.practicum.shareit.common.utils.Constants.PATTERN_FOR_DATETIME;
 
 
-@Data
+@Getter
 public class CommentDto {
 
     private Long id;
