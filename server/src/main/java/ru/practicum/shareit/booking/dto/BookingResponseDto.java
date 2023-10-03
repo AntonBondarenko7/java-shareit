@@ -7,7 +7,7 @@ import ru.practicum.shareit.user.dto.UserShortDto;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import static ru.practicum.shareit.common.utils.Constants.PATTERN_FOR_BOOKING;
+import static ru.practicum.shareit.utils.Constants.PATTERN_FOR_BOOKING;
 
 @Data
 public class BookingResponseDto {

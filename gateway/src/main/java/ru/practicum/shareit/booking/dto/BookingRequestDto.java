@@ -9,7 +9,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-import static ru.practicum.shareit.common.utils.Constants.PATTERN_FOR_BOOKING;
+import static ru.practicum.shareit.utils.Constants.PATTERN_FOR_BOOKING;
 
 @Data
 public class BookingRequestDto {

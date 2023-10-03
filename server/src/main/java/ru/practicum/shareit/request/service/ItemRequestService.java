@@ -10,7 +10,7 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.common.utils.ValidPage;
+import ru.practicum.shareit.utils.ValidPage;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class ItemRequestService {
                 itemRequestRepository.findAllByRequesterIdNot(userId, page));
     }
 
-    public ItemRequestDto getItemRequestById(Long requestId, Long userId) {
+    public ItemRequestDto getItemRequestById(Long userId, Long requestId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(userId));
         ItemRequest itemRequest = itemRequestRepository.findById(requestId).orElseThrow(() ->
@@ -54,7 +54,7 @@ public class ItemRequestService {
     }
 
     @Transactional
-    public ItemRequestDto createItemRequest(ItemRequestDto itemRequestDto, Long userId) {
+    public ItemRequestDto createItemRequest(Long userId, ItemRequestDto itemRequestDto) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(userId));
 

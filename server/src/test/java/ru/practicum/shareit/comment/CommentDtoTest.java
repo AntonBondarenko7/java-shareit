@@ -2,7 +2,7 @@ package ru.practicum.shareit.comment;
 
 import ru.practicum.shareit.comment.dto.CommentDto;
 
-import static ru.practicum.shareit.common.utils.Constants.FORMATTER_FOR_DATETIME;
+import static ru.practicum.shareit.utils.Constants.FORMATTER_FOR_DATETIME;
 
 import java.time.LocalDateTime;
 

@@ -12,8 +12,8 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.model.QBooking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.common.exception.ValidationException;
-import ru.practicum.shareit.common.utils.ValidPage;
+import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.utils.ValidPage;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.ItemOwnershipException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -133,7 +133,7 @@ public class BookingService {
         return BookingMapper.INSTANCE.convertBookingListToBookingResponseDtoList(bookings);
     }
 
-    public BookingResponseDto getBookingById(Long bookingId, Long userId) {
+    public BookingResponseDto getBookingById(Long userId, Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() ->
                 new BookingNotFoundException(bookingId));
         if ((!booking.getBooker().getId().equals(userId)) &&

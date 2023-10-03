@@ -4,7 +4,7 @@ import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import static ru.practicum.shareit.common.utils.Constants.FORMATTER_FOR_BOOKING;
+import static ru.practicum.shareit.utils.Constants.FORMATTER_FOR_BOOKING;
 
 import java.time.LocalDateTime;
 

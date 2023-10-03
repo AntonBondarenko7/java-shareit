@@ -14,14 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.common.utils.Constants;
+import ru.practicum.shareit.controller.AdviceController;
+import ru.practicum.shareit.utils.Constants;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/bookings")
 @Slf4j
 @Validated
-public class BookingController {
+public class BookingController extends AdviceController {
 
     private final BookingClient bookingClient;
 

@@ -1,6 +1,6 @@
-package ru.practicum.shareit.common.utils;
+package ru.practicum.shareit.utils;
 
-import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.exception.ValidationException;
 import org.springframework.data.domain.PageRequest;
 
 public class ValidPage {

@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item;
 
 import ru.practicum.shareit.comment.dto.CommentDto;
-import ru.practicum.shareit.common.utils.Constants;
+import ru.practicum.shareit.utils.Constants;
 import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
@@ -119,13 +119,13 @@ class ItemControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(itemDto), equalTo(result));
-        verify(itemService, times(1)).getItemById(itemId, userId);
+        verify(itemService, times(1)).getItemById(userId, itemId);
     }
 
     @SneakyThrows
     @Test
     void createItem_whenItemValid_thenSavedItem() {
-        when(itemService.createItem(any(ItemDto.class), anyLong())).thenReturn(itemDto);
+        when(itemService.createItem(anyLong(), any(ItemDto.class))).thenReturn(itemDto);
 
         String result = mockMvc.perform(post("/items")
                         .header(Constants.HEADER_USER_ID, userId)
@@ -139,7 +139,7 @@ class ItemControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(itemDto), equalTo(result));
-        verify(itemService, times(1)).createItem(itemDto, userId);
+        verify(itemService, times(1)).createItem(userId, itemDto);
     }
 
     @SneakyThrows
@@ -160,14 +160,14 @@ class ItemControllerIntegrationTest {
 
         assertThat("{\"error\":\"Название не может быть пустым\"}",
                 equalTo(result));
-        verify(itemService, never()).createItem(itemDto, userId);
+        verify(itemService, never()).createItem(userId, itemDto);
     }
 
     @SneakyThrows
     @Test
     void updateItem_whenItemValid_thenUpdatedItem() {
         long itemId = 0L;
-        when(itemService.updateItem(anyLong(), any(ItemDto.class), anyLong())).thenReturn(itemDto2);
+        when(itemService.updateItem(anyLong(), anyLong(), any(ItemDto.class))).thenReturn(itemDto2);
 
         String result = mockMvc.perform(patch("/items/{itemId}", itemId)
                         .header(Constants.HEADER_USER_ID, userId)
@@ -181,14 +181,14 @@ class ItemControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(itemDto2), equalTo(result));
-        verify(itemService, times(1)).updateItem(itemId, itemDto2, userId);
+        verify(itemService, times(1)).updateItem(userId, itemId, itemDto2);
     }
 
     @SneakyThrows
     @Test
     void findItems_whenInvoked_thenResponseStatusOkWithItemsCollectionInBody() {
         List<ItemDto> items = Arrays.asList(itemDto, itemDto2);
-        when(itemService.findItems(anyString(), anyLong(), anyInt(), anyInt())).thenReturn(items);
+        when(itemService.findItems(anyLong(), anyString(), anyInt(), anyInt())).thenReturn(items);
 
         String result = mockMvc.perform(get("/items/search")
                         .header(Constants.HEADER_USER_ID, userId)
@@ -203,7 +203,7 @@ class ItemControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(items), equalTo(result));
-        verify(itemService, times(1)).findItems("текст", userId, 0, 10);
+        verify(itemService, times(1)).findItems(userId, "текст", 0, 10);
     }
 
     @SneakyThrows
@@ -214,7 +214,7 @@ class ItemControllerIntegrationTest {
         commentDto.setId(1L);
         commentDto.setText("text 1");
 
-        when(itemService.saveComment(any(CommentDto.class), anyLong(), anyLong())).thenReturn(commentDto);
+        when(itemService.saveComment(anyLong(), any(CommentDto.class), anyLong())).thenReturn(commentDto);
 
         String result = mockMvc.perform(post("/items/{itemId}/comment", itemId)
                         .header(Constants.HEADER_USER_ID, userId)
@@ -228,7 +228,7 @@ class ItemControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(commentDto), equalTo(result));
-        verify(itemService, times(1)).saveComment(commentDto, itemId, userId);
+        verify(itemService, times(1)).saveComment(userId, commentDto, itemId);
     }
 
     @SneakyThrows
@@ -250,7 +250,7 @@ class ItemControllerIntegrationTest {
 
         assertThat("{\"error\":\"Ошибка! Текст комментария не может быть пустым.\"}",
                 equalTo(result));
-        verify(itemService, never()).saveComment(commentDto, itemId, userId);
+        verify(itemService, never()).saveComment(userId, commentDto, itemId);
     }
 
 }

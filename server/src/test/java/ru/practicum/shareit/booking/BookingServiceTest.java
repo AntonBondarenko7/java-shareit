@@ -12,7 +12,7 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.ItemOwnershipException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -342,7 +342,7 @@ class BookingServiceTest {
         expectedBooking.setBooker(user);
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(expectedBooking));
 
-        BookingResponseDto actualBooking = bookingService.getBookingById(userId, bookingId);
+        BookingResponseDto actualBooking = bookingService.getBookingById(bookingId, userId);
 
         assertThat(BookingMapper.INSTANCE.toBookingResponseDto(expectedBooking), equalTo(actualBooking));
         verify(bookingRepository, times(1)).findById(bookingId);
@@ -354,7 +354,7 @@ class BookingServiceTest {
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.empty());
 
         final BookingNotFoundException exception = assertThrows(BookingNotFoundException.class,
-                () -> bookingService.getBookingById(0L, bookingId));
+                () -> bookingService.getBookingById(bookingId, 0L));
 
         assertThat("Бронирование с идентификатором 0 не найдено.", equalTo(exception.getMessage()));
         verify(bookingRepository, times(1)).findById(bookingId);
@@ -375,7 +375,7 @@ class BookingServiceTest {
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(expectedBooking));
 
         final OtherBookerException exception = assertThrows(OtherBookerException.class,
-                () -> bookingService.getBookingById(1L, bookingId));
+                () -> bookingService.getBookingById(bookingId, 1L));
 
         assertThat("Пользователь с id = 1 не осуществлял бронирование с id = 1",
                 equalTo(exception.getMessage()));

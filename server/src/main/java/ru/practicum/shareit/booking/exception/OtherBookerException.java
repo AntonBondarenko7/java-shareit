@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.exception;
 
-import ru.practicum.shareit.common.exception.NotFoundException;
+import ru.practicum.shareit.exception.NotFoundException;
 
 public class OtherBookerException extends NotFoundException {
     public OtherBookerException(Long userId, Long bookingId) {

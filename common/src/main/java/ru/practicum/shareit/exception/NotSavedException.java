@@ -1,4 +1,4 @@
-package ru.practicum.shareit.common.exception;
+package ru.practicum.shareit.exception;
 
 public class NotSavedException extends RuntimeException {
 

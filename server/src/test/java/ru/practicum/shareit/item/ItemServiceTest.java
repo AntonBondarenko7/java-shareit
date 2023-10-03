@@ -4,7 +4,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.comment.exception.CommentNotSavedException;
-import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.exception.*;
@@ -116,7 +116,7 @@ class ItemServiceTest {
         when(itemRepository.findById(itemId)).thenReturn(Optional.of(expectedItem));
         when(commentRepository.findAllByItemId(anyLong())).thenReturn(Collections.EMPTY_LIST);
 
-        ItemDto actualItem = itemService.getItemById(itemId, userId);
+        ItemDto actualItem = itemService.getItemById(userId, itemId);
 
         assertThat(ItemMapper.INSTANCE.toItemOwnerDto(expectedItem,
                 null, null, Collections.EMPTY_LIST), equalTo(actualItem));
@@ -162,7 +162,7 @@ class ItemServiceTest {
                 any(LocalDateTime.class), any(Sort.class))).thenReturn(Optional.of(nextBooking));
         when(commentRepository.findAllByItemId(anyLong())).thenReturn(Arrays.asList(comment));
 
-        ItemDto actualItem = itemService.getItemById(itemId, userId);
+        ItemDto actualItem = itemService.getItemById(userId, itemId);
 
         assertThat(ItemMapper.INSTANCE.toItemOwnerDto(expectedItem,
                 lastBooking, nextBooking, Arrays.asList(comment)), equalTo(actualItem));
@@ -183,7 +183,7 @@ class ItemServiceTest {
         when(itemRepository.findById(itemId)).thenReturn(Optional.empty());
 
         final ItemNotFoundException exception = assertThrows(ItemNotFoundException.class,
-                () -> itemService.getItemById(itemId, 0L));
+                () -> itemService.getItemById(0L, itemId));
 
         assertThat("Вещь с идентификатором 0 не найдена.", equalTo(exception.getMessage()));
         verify(itemRepository, times(1)).findById(itemId);
@@ -199,7 +199,7 @@ class ItemServiceTest {
         when(itemRepository.save(any(Item.class)))
                 .thenReturn(ItemMapper.INSTANCE.toItem(itemToSave, user));
 
-        ItemDto actualItem = itemService.createItem(itemToSave, userId);
+        ItemDto actualItem = itemService.createItem(userId, itemToSave);
 
         assertThat(itemToSave, equalTo(actualItem));
         InOrder inOrder = inOrder(userRepository, itemRepository);
@@ -224,7 +224,7 @@ class ItemServiceTest {
         when(itemRepository.save(any(Item.class)))
                 .thenReturn(item);
 
-        ItemDto actualItem = itemService.createItem(itemToSave, userId);
+        ItemDto actualItem = itemService.createItem(userId, itemToSave);
 
         assertThat(itemToSave, equalTo(actualItem));
         InOrder inOrder = inOrder(userRepository, itemRequestRepository, itemRepository);
@@ -239,7 +239,7 @@ class ItemServiceTest {
         Long userId = 0L;
 
         final ValidationException exception = assertThrows(ValidationException.class,
-                () -> itemService.createItem(itemToSave, userId));
+                () -> itemService.createItem(userId, itemToSave));
 
         assertThat("Ошибка! Статус доступности вещи для аренды не может быть пустым.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRepository);
@@ -257,7 +257,7 @@ class ItemServiceTest {
                 .thenThrow(new ItemNotSavedException());
 
         final ItemNotSavedException exception = assertThrows(ItemNotSavedException.class,
-                () -> itemService.createItem(itemToSave, userId));
+                () -> itemService.createItem(userId, itemToSave));
 
         assertThat("Не удалось сохранить данные вещи", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRepository);
@@ -273,7 +273,7 @@ class ItemServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> itemService.createItem(itemToSave, userId));
+                () -> itemService.createItem(userId, itemToSave));
 
         assertThat("Пользователь с идентификатором 0 не найден.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRepository);
@@ -304,7 +304,7 @@ class ItemServiceTest {
         newItem.setAvailable(true);
         newItem.setRequest(itemRequest);
 
-        itemService.updateItem(itemId, ItemMapper.INSTANCE.toItemDto(newItem), userId);
+        itemService.updateItem(userId, itemId, ItemMapper.INSTANCE.toItemDto(newItem));
         verify(itemRepository).saveAndFlush(itemArgumentCaptor.capture());
         Item savedItem = itemArgumentCaptor.getValue();
 
@@ -325,7 +325,7 @@ class ItemServiceTest {
         when(itemRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final ItemNotFoundException exception = assertThrows(ItemNotFoundException.class,
-                () -> itemService.updateItem(itemId, new ItemDto(), userId));
+                () -> itemService.updateItem(userId, itemId, new ItemDto()));
 
         assertThat("Вещь с идентификатором 0 не найдена.", equalTo(exception.getMessage()));
         verify(itemRepository, times(1)).findById(anyLong());
@@ -344,7 +344,7 @@ class ItemServiceTest {
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(oldItem));
 
         final ItemOwnershipException exception = assertThrows(ItemOwnershipException.class,
-                () -> itemService.updateItem(itemId, new ItemDto(), userId));
+                () -> itemService.updateItem(userId, itemId, new ItemDto()));
 
         assertThat("Пользователь с id = 0 не является владельцем вещи c id = 0",
                 equalTo(exception.getMessage()));
@@ -366,7 +366,7 @@ class ItemServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> itemService.updateItem(itemId, new ItemDto(), userId));
+                () -> itemService.updateItem(userId, itemId, new ItemDto()));
 
         assertThat("Пользователь с идентификатором 0 не найден.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(itemRepository, userRepository);
@@ -389,7 +389,7 @@ class ItemServiceTest {
                 .thenThrow(new ItemNotSavedException());
 
         final ItemNotSavedException exception = assertThrows(ItemNotSavedException.class,
-                () -> itemService.updateItem(itemId, new ItemDto(), userId));
+                () -> itemService.updateItem(userId, itemId, new ItemDto()));
 
         assertThat("Не удалось сохранить данные вещи", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRepository);
@@ -402,7 +402,7 @@ class ItemServiceTest {
     void findItems_whenInvokedWithEmptyText_thenReturnedEmptyList() {
         Long userId = 0L;
 
-        List<ItemDto> actualItems = itemService.findItems("", userId, 0, 1);
+        List<ItemDto> actualItems = itemService.findItems(userId, "", 0, 1);
 
         assertThat(actualItems, empty());
         verify(itemRepository, never()).search("", PageRequest.of(0, 1));
@@ -412,7 +412,7 @@ class ItemServiceTest {
     void findItems_whenInvoked_thenReturnedEmptyList() {
         Long userId = 0L;
 
-        List<ItemDto> actualItems = itemService.findItems("1", userId, 0, 1);
+        List<ItemDto> actualItems = itemService.findItems(userId, "1", 0, 1);
 
         assertThat(actualItems, empty());
         verify(itemRepository, times(1))
@@ -425,7 +425,7 @@ class ItemServiceTest {
         List<Item> expectedItems = Arrays.asList(new Item(), new Item());
         when(itemRepository.search(anyString(), any(Pageable.class))).thenReturn(expectedItems);
 
-        List<ItemDto> actualItems = itemService.findItems("1", userId, 1, 1);
+        List<ItemDto> actualItems = itemService.findItems(userId, "1", 1, 1);
 
         assertThat(ItemMapper.INSTANCE.convertItemListToItemDtoList(expectedItems),
                 equalTo(actualItems));
@@ -448,7 +448,7 @@ class ItemServiceTest {
                 .thenReturn(0L);
         when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
-        CommentDto actualComment = itemService.saveComment(commentToSave, itemId, userId);
+        CommentDto actualComment = itemService.saveComment(userId, commentToSave, itemId);
 
         assertThat(commentToSave, equalTo(actualComment));
         InOrder inOrder = inOrder(itemRepository, userRepository, bookingRepository, commentRepository);
@@ -467,7 +467,7 @@ class ItemServiceTest {
         when(itemRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final ItemNotFoundException exception = assertThrows(ItemNotFoundException.class,
-                () -> itemService.saveComment(commentToSave, itemId, userId));
+                () -> itemService.saveComment(userId, commentToSave, itemId));
 
         assertThat("Вещь с идентификатором 0 не найдена.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(itemRepository, userRepository, bookingRepository, commentRepository);
@@ -487,7 +487,7 @@ class ItemServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> itemService.saveComment(commentToSave, itemId, userId));
+                () -> itemService.saveComment(userId, commentToSave, itemId));
 
         assertThat("Пользователь с идентификатором 0 не найден.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(itemRepository, userRepository, bookingRepository, commentRepository);
@@ -512,7 +512,7 @@ class ItemServiceTest {
                 .thenThrow(new CommentNotSavedException());
 
         final CommentNotSavedException exception = assertThrows(CommentNotSavedException.class,
-                () -> itemService.saveComment(commentToSave, itemId, userId));
+                () -> itemService.saveComment(userId, commentToSave, itemId));
 
         assertThat("Не удалось сохранить комментарий", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(itemRepository, userRepository, bookingRepository, commentRepository);
@@ -535,7 +535,7 @@ class ItemServiceTest {
                 .thenReturn(null);
 
         final ValidationException exception = assertThrows(ValidationException.class,
-                () -> itemService.saveComment(commentToSave, itemId, userId));
+                () -> itemService.saveComment(userId, commentToSave, itemId));
 
         assertThat("Ошибка!  Отзыв может оставить только тот пользователь, который брал эту вещь в аренду, " +
                 "и только после окончания срока аренды.", equalTo(exception.getMessage()));

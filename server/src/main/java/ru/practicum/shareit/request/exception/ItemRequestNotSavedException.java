@@ -1,6 +1,6 @@
 package ru.practicum.shareit.request.exception;
 
-import ru.practicum.shareit.common.exception.NotSavedException;
+import ru.practicum.shareit.exception.NotSavedException;
 
 public class ItemRequestNotSavedException extends NotSavedException {
 

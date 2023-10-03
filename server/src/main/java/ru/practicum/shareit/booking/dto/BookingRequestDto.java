@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 import lombok.Data;
 
-import static ru.practicum.shareit.common.utils.Constants.PATTERN_FOR_BOOKING;
+import static ru.practicum.shareit.utils.Constants.PATTERN_FOR_BOOKING;
 
 @Data
 public class BookingRequestDto {

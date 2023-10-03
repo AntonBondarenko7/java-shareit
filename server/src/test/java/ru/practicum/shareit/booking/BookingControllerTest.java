@@ -86,13 +86,13 @@ class BookingControllerTest {
         long bookingId = 0L;
         long userId = 0L;
         BookingResponseDto expectedBooking = new BookingResponseDto();
-        when(bookingService.getBookingById(userId, bookingId)).thenReturn(expectedBooking);
+        when(bookingService.getBookingById(bookingId, userId)).thenReturn(expectedBooking);
 
         BookingResponseDto response = bookingController.getBookingById(bookingId, userId);
 
 
         assertThat(expectedBooking, equalTo(response));
-        verify(bookingService, times(1)).getBookingById(userId, bookingId);
+        verify(bookingService, times(1)).getBookingById(bookingId, userId);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package ru.practicum.shareit.request;
 
-import ru.practicum.shareit.common.utils.Constants;
+import ru.practicum.shareit.utils.Constants;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.request.controller.ItemRequestController;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
@@ -133,13 +133,13 @@ class ItemRequestControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(itemRequestDto), equalTo(result));
-        verify(itemRequestService, times(1)).getItemRequestById(itemRequestId, userId);
+        verify(itemRequestService, times(1)).getItemRequestById(userId, itemRequestId);
     }
 
     @SneakyThrows
     @Test
     void saveItemRequest_whenItemRequestValid_thenSavedItemRequest() {
-        when(itemRequestService.createItemRequest(any(ItemRequestDto.class), anyLong()))
+        when(itemRequestService.createItemRequest(anyLong(), any(ItemRequestDto.class)))
                 .thenReturn(itemRequestDto);
 
         String result = mockMvc.perform(post("/requests")
@@ -155,7 +155,7 @@ class ItemRequestControllerIntegrationTest {
 
         assertThat(objectMapper.writeValueAsString(itemRequestDto), equalTo(result));
         verify(itemRequestService, times(1))
-                .createItemRequest(any(ItemRequestDto.class), anyLong());
+                .createItemRequest(anyLong(), any(ItemRequestDto.class));
     }
 
 }

@@ -83,29 +83,29 @@ class ItemRequestControllerTest {
         long requestId = 0L;
         long userId = 0L;
         ItemRequestDto expectedItemRequest = new ItemRequestDto();
-        when(itemRequestService.getItemRequestById(requestId, userId)).thenReturn(expectedItemRequest);
+        when(itemRequestService.getItemRequestById(userId, requestId)).thenReturn(expectedItemRequest);
 
         ItemRequestDto response = itemRequestController
-                .getItemRequestById(requestId, userId);
+                .getItemRequestById(userId, requestId);
 
         assertThat(expectedItemRequest, equalTo(response));
         verify(itemRequestService, times(1))
-                .getItemRequestById(requestId, userId);
+                .getItemRequestById(userId, requestId);
     }
 
     @Test
     void saveItemRequest_whenItemRequestValid_thenSavedItemRequest() {
         ItemRequestDto expectedItemRequest = new ItemRequestDto();
         long userId = 0L;
-        when(itemRequestService.createItemRequest(expectedItemRequest, userId))
+        when(itemRequestService.createItemRequest(userId, expectedItemRequest))
                 .thenReturn(expectedItemRequest);
 
         ItemRequestDto response = itemRequestController
-                .saveItemRequest(expectedItemRequest, userId);
+                .saveItemRequest(userId, expectedItemRequest);
 
         assertThat(expectedItemRequest, equalTo(response));
         verify(itemRequestService, times(1))
-                .createItemRequest(expectedItemRequest, userId);
+                .createItemRequest(userId, expectedItemRequest);
     }
 
 }

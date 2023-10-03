@@ -7,9 +7,9 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.comment.exception.CommentNotSavedException;
-import ru.practicum.shareit.common.utils.ValidPage;
+import ru.practicum.shareit.utils.ValidPage;
 import ru.practicum.shareit.item.exception.*;
-import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.comment.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -51,16 +51,16 @@ public class ItemService {
 
         return itemRepository.findAllByOwnerId(userId, page)
                 .stream()
-                .map(item -> getItemById(item.getId(), userId))
+                .map(item -> getItemById(userId, item.getId()))
                 .collect(Collectors.toList());
     }
 
-    public ItemDto getItemById(Long itemId, Long userId) {
+    public ItemDto getItemById(Long userId, Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new ItemNotFoundException(itemId));
 
-        Booking lastBooking = setLastBooking(item, userId);
-        Booking nextBooking = setNextBooking(item, userId);
+        Booking lastBooking = setLastBooking(userId, item);
+        Booking nextBooking = setNextBooking(userId, item);
 
         List<Comment> comments = commentRepository.findAllByItemId(itemId);
 
@@ -68,7 +68,7 @@ public class ItemService {
     }
 
     @Transactional
-    public ItemDto createItem(ItemDto itemDto, Long userId) {
+    public ItemDto createItem(Long userId, ItemDto itemDto) {
         validateItemDto(itemDto);
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(userId));
@@ -91,7 +91,7 @@ public class ItemService {
     }
 
     @Transactional
-    public ItemDto updateItem(Long itemId, ItemDto itemDto, Long userId) {
+    public ItemDto updateItem(Long userId, Long itemId, ItemDto itemDto) {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new ItemNotFoundException(itemId));
         if (!item.getOwner().getId().equals(userId)) {
@@ -117,7 +117,7 @@ public class ItemService {
 
     }
 
-    public List<ItemDto> findItems(String text, Long userId, Integer from, Integer size) {
+    public List<ItemDto> findItems(Long userId, String text, Integer from, Integer size) {
         if (text.isEmpty()) {
             return Collections.EMPTY_LIST;
         }
@@ -128,7 +128,7 @@ public class ItemService {
     }
 
     @Transactional
-    public CommentDto saveComment(CommentDto commentDto, Long itemId, Long userId) {
+    public CommentDto saveComment(Long userId, CommentDto commentDto, Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new ItemNotFoundException(itemId));
         User user = userRepository.findById(userId).orElseThrow(() ->
@@ -156,7 +156,7 @@ public class ItemService {
         }
     }
 
-    private Booking setLastBooking(Item item, Long userId) {
+    private Booking setLastBooking(Long userId, Item item) {
         Booking lastBooking;
         if (item.getOwner().getId().equals(userId)) {
             lastBooking = bookingRepository.findFirstByItemIdAndStatusAndStartIsBefore(
@@ -168,7 +168,7 @@ public class ItemService {
         return lastBooking;
     }
 
-    private Booking setNextBooking(Item item, Long userId) {
+    private Booking setNextBooking(Long userId, Item item) {
         Booking nextBooking;
         if (item.getOwner().getId().equals(userId)) {
             nextBooking = bookingRepository.findFirstByItemIdAndStatusAndStartIsAfter(

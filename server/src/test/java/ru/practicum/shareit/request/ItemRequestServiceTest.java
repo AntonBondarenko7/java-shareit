@@ -1,6 +1,6 @@
 package ru.practicum.shareit.request;
 
-import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.exception.ItemRequestNotFoundException;
 import ru.practicum.shareit.request.exception.ItemRequestNotSavedException;
@@ -175,7 +175,7 @@ class ItemRequestServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
         when(itemRequestRepository.findById(userId)).thenReturn(Optional.of(expectedItemRequest));
 
-        ItemRequestDto actualItemRequest = itemRequestService.getItemRequestById(itemRequestId, userId);
+        ItemRequestDto actualItemRequest = itemRequestService.getItemRequestById(userId, itemRequestId);
 
         assertThat(ItemRequestMapper.INSTANCE.toItemRequestDto(expectedItemRequest), equalTo(actualItemRequest));
         InOrder inOrder = inOrder(userRepository, itemRequestRepository);
@@ -190,7 +190,7 @@ class ItemRequestServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> itemRequestService.getItemRequestById(itemRequestId, userId));
+                () -> itemRequestService.getItemRequestById(userId, itemRequestId));
 
         assertThat("Пользователь с идентификатором 0 не найден.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRequestRepository);
@@ -206,7 +206,7 @@ class ItemRequestServiceTest {
         when(itemRequestRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final ItemRequestNotFoundException exception = assertThrows(ItemRequestNotFoundException.class,
-                () -> itemRequestService.getItemRequestById(itemRequestId, userId));
+                () -> itemRequestService.getItemRequestById(userId, itemRequestId));
 
         assertThat("Запрос с идентификатором 0 не найден.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRequestRepository);
@@ -221,7 +221,7 @@ class ItemRequestServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         final UserNotFoundException exception = assertThrows(UserNotFoundException.class,
-                () -> itemRequestService.createItemRequest(itemRequestToSave, userId));
+                () -> itemRequestService.createItemRequest(userId, itemRequestToSave));
 
         assertThat("Пользователь с идентификатором 0 не найден.", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRequestRepository);
@@ -239,7 +239,7 @@ class ItemRequestServiceTest {
                 .thenThrow(new ItemRequestNotSavedException());
 
         final ItemRequestNotSavedException exception = assertThrows(ItemRequestNotSavedException.class,
-                () -> itemRequestService.createItemRequest(itemRequestToSave, userId));
+                () -> itemRequestService.createItemRequest(userId, itemRequestToSave));
 
         assertThat("Не удалось сохранить данные запроса", equalTo(exception.getMessage()));
         InOrder inOrder = inOrder(userRepository, itemRequestRepository);

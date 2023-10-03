@@ -1,4 +1,4 @@
-package ru.practicum.shareit.common.controller;
+package ru.practicum.shareit.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.practicum.shareit.common.exception.ErrorResponse;
-import ru.practicum.shareit.common.exception.NotFoundException;
-import ru.practicum.shareit.common.exception.NotSavedException;
-import ru.practicum.shareit.common.exception.ValidationException;
+import ru.practicum.shareit.exception.ErrorResponse;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.NotSavedException;
+import ru.practicum.shareit.exception.ValidationException;
 
 import java.util.Objects;
 

@@ -9,7 +9,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.common.utils.Constants;
+import ru.practicum.shareit.utils.Constants;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -192,7 +192,7 @@ class BookingControllerIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(objectMapper.writeValueAsString(bookingResponseDto), equalTo(result));
-        verify(bookingService, times(1)).getBookingById(userId, bookingId);
+        verify(bookingService, times(1)).getBookingById(bookingId, userId);
     }
 
     @SneakyThrows

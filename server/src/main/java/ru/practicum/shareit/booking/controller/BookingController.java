@@ -10,7 +10,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.common.utils.Constants;
+import ru.practicum.shareit.utils.Constants;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +39,7 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     public BookingResponseDto getBookingById(@PathVariable Long bookingId,
                                              @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
-        return bookingService.getBookingById(bookingId, userId);
+        return bookingService.getBookingById(userId, bookingId);
     }
 
     @PostMapping

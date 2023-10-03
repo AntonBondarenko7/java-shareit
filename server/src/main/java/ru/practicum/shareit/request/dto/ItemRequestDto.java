@@ -1,6 +1,5 @@
 package ru.practicum.shareit.request.dto;
 
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import ru.practicum.shareit.item.dto.ItemDto;
 
@@ -13,7 +12,6 @@ public class ItemRequestDto {
 
     private Long id;
 
-    @NotNull(message = "У запроса вещи должно быть описание.")
     private String description;
 
     private Instant created = Instant.now();
