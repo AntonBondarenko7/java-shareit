@@ -1,4 +1,4 @@
-package ru.practicum.shareit.common;
+package ru.practicum.shareit.common.exception;
 
 public class NotFoundException extends RuntimeException {
 

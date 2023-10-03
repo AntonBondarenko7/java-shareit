@@ -3,7 +3,7 @@ package ru.practicum.shareit.item.controller;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.comment.dto.CommentDto;
-import ru.practicum.shareit.common.Constants;
+import ru.practicum.shareit.common.utils.Constants;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -23,9 +23,11 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public List<ItemDto> getAllItemsByUser(@RequestHeader(Constants.HEADER_USER_ID) Long userId) {
+    public List<ItemDto> getAllItemsByUser(@RequestHeader(Constants.HEADER_USER_ID) Long userId,
+                                           @RequestParam(defaultValue = "0") Integer from,
+                                           @RequestParam(defaultValue = "10") Integer size) {
         log.info("Запрос на получение всех вещей для пользователя с id = " + userId);
-        List<ItemDto> items = itemService.getAllItemsByUser(userId);
+        List<ItemDto> items = itemService.getAllItemsByUser(userId, from, size);
         log.info("Ответ на получение всех вещей для пользователя с id = " + userId + ": " + items);
         return items;
     }
@@ -59,9 +61,11 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> findItems(@RequestParam String text,
-                                                   @RequestHeader(Constants.HEADER_USER_ID) Long userId) {
+                                   @RequestHeader(Constants.HEADER_USER_ID) Long userId,
+                                   @RequestParam(defaultValue = "0") Integer from,
+                                   @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получен запрос на поиск вещей");
-        List<ItemDto> items = itemService.findItems(text, userId);
+        List<ItemDto> items = itemService.findItems(text, userId, from, size);
         log.info("Ответ на поиск вещей: " + items);
         return items;
     }

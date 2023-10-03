@@ -2,7 +2,7 @@ package ru.practicum.shareit.user.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.common.AdviceController;
+import ru.practicum.shareit.common.controller.AdviceController;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 

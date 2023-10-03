@@ -1,11 +1,13 @@
 package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import ru.practicum.shareit.user.exception.UserNotFoundException;
+import ru.practicum.shareit.user.exception.UserNotSavedException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -29,7 +31,11 @@ public class UserService {
 
     @Transactional
     public UserDto createUser(UserDto userDto) {
-        return UserMapper.INSTANCE.toUserDto(userRepository.save(UserMapper.INSTANCE.toUser(userDto)));
+        try {
+            return UserMapper.INSTANCE.toUserDto(userRepository.save(UserMapper.INSTANCE.toUser(userDto)));
+        } catch (DataIntegrityViolationException e) {
+            throw new UserNotSavedException();
+        }
     }
 
     @Transactional
@@ -44,7 +50,11 @@ public class UserService {
             user.setName(userDto.getName());
         }
 
-        return UserMapper.INSTANCE.toUserDto(userRepository.saveAndFlush(user));
+        try {
+            return UserMapper.INSTANCE.toUserDto(userRepository.saveAndFlush(user));
+        } catch (DataIntegrityViolationException e) {
+            throw new UserNotSavedException();
+        }
     }
 
     @Transactional
