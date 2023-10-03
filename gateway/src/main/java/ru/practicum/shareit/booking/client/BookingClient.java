@@ -52,8 +52,8 @@ public class BookingClient extends BaseClient {
     }
 
 
-    public ResponseEntity<Object> saveBooking(Long userId, BookingRequestDto BookingRequestDto) {
-        return post("", userId, BookingRequestDto);
+    public ResponseEntity<Object> saveBooking(Long userId, BookingRequestDto bookingRequestDto) {
+        return post("", userId, bookingRequestDto);
     }
 
     public ResponseEntity<Object> updateBooking(Long userId, Long bookingId, Boolean approved) {

@@ -58,9 +58,9 @@ public class BookingController extends AdviceController {
     @PostMapping
     public ResponseEntity<Object> saveBooking(
             @RequestHeader(Constants.HEADER_USER_ID) Long userId,
-            @Valid @RequestBody BookingRequestDto bookingInDto) {
-        log.info("Добавлен новый запрос на бронирование: {}, userId={}.", bookingInDto, userId);
-        return bookingClient.saveBooking(userId, bookingInDto);
+            @Valid @RequestBody BookingRequestDto bookingRequestDto) {
+        log.info("Добавлен новый запрос на бронирование: {}, userId={}.", bookingRequestDto, userId);
+        return bookingClient.saveBooking(userId, bookingRequestDto);
     }
 
     @PatchMapping("/{bookingId}")
